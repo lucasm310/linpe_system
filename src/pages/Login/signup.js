@@ -13,18 +13,24 @@ import { loginStyle } from "./index.style";
 import { Auth } from "aws-amplify";
 
 export default function FormSignUp(props) {
-  const { setTipoForm, setUserName } = props;
+  const { setTipoForm, setUserName, setUserEmail } = props;
   const [senha, setSenha] = useState();
   const [email, setEmail] = useState();
   const [nome, setNome] = useState();
   const [telefone, setTelefone] = useState();
   const [dataNascimento, setDataNascimento] = useState();
   const [curso, setCurso] = useState();
-  const [nivel, SetNivel] = useState();
+  const [nivel, SetNivel] = useState("bacharelado");
 
   const [erroField, setErroField] = useState(false);
+  const [erroFieldEmail, setErroFieldEmail] = useState(false);
   const classes = loginStyle();
-  async function signUp() {
+  async function signUp(event) {
+    event.preventDefault();
+    let telefoneFormatado = telefone;
+    if (telefone.startsWith("+55") === false) {
+      telefoneFormatado = `+55${telefone}`;
+    }
     try {
       await Auth.signUp({
         username: email,
@@ -32,18 +38,24 @@ export default function FormSignUp(props) {
         attributes: {
           email: email,
           name: nome,
-          "custom:telefone": telefone,
-          "custom:datanascimento": dataNascimento,
+          phone_number: telefoneFormatado,
+          birthdate: dataNascimento,
           "custom:curso": curso,
           "custom:nivel": nivel,
         },
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         setUserName(res.userSub);
+        setUserEmail(email)
         console.log("sign up success!");
         setTipoForm("confsignup");
       });
     } catch (err) {
+      if (err.code === "UsernameExistsException") {
+        setErroFieldEmail(true);
+      } else {
+        setErroField(true);
+      }
       console.log("error signing up..", err);
     }
   }
@@ -53,7 +65,11 @@ export default function FormSignUp(props) {
       <Typography component="h1" variant="h5">
         Cadastrar
       </Typography>
-      <form className={classes.form}>
+      <form
+        className={classes.form}
+        noValidate={false}
+        onSubmit={(event) => signUp(event)}
+      >
         <TextField
           variant="outlined"
           margin="normal"
@@ -92,6 +108,7 @@ export default function FormSignUp(props) {
           autoComplete="telefone"
           onChange={(event) => setTelefone(event.target.value)}
           error={erroField}
+          helperText="DDD+Número, ex: 1499998888"
         />
 
         <TextField
@@ -109,7 +126,6 @@ export default function FormSignUp(props) {
         <InputLabel id="nivel-especializacao">Nível Especialização</InputLabel>
         <Select
           variant="outlined"
-          margin="normal"
           labelId="nivel-especializacao"
           id="nivel-especializacao"
           onChange={(event) => {
@@ -117,6 +133,7 @@ export default function FormSignUp(props) {
           }}
           required
           fullWidth
+          value={nivel}
         >
           <MenuItem value="bacharelado">Bacharelado</MenuItem>
           <MenuItem value="licenciatura">Licenciatura</MenuItem>
@@ -136,8 +153,10 @@ export default function FormSignUp(props) {
           label="Email"
           name="email"
           autoComplete="email"
+          type="email"
           onChange={(event) => setEmail(event.target.value)}
-          error={erroField}
+          error={erroFieldEmail}
+          helperText={erroFieldEmail && "Email já cadastrado"}
         />
         <TextField
           variant="outlined"
@@ -151,14 +170,18 @@ export default function FormSignUp(props) {
           autoComplete="current-password"
           onChange={(event) => setSenha(event.target.value)}
           error={erroField}
+          helperText={
+            erroField
+              ? "Campos inválidos por favor verificar"
+              : "Minimo 8 dígitos"
+          }
         />
         <Button
-          type="button"
+          type="submit"
           fullWidth
           variant="contained"
           color="primary"
           className={classes.submit}
-          onClick={() => signUp()}
         >
           Cadastrar
         </Button>

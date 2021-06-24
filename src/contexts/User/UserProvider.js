@@ -10,13 +10,12 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(false);
   const [expire, setExpire] = useState(false);
   const [groups, setGroups] = useState(false);
-  const [userSession, setUserSession] = useState(false);
   const [openPerfil, setOpenPerfil] = useState(false);
   const history = useHistory();
 
   const isLoged = (res) => {
-    setUserSession(res);
     var accestoken = res.getAccessToken();
+    // console.log(accestoken)
     setGroups(accestoken.payload["cognito:groups"]);
     setToken(accestoken.jwtToken);
     setExpire(accestoken.payload["exp"]);
@@ -26,12 +25,12 @@ const UserProvider = ({ children }) => {
         setUser(res);
         if (
           !("custom:curso" in res.attributes) ||
-          !("custom:datanascimento" in res.attributes) ||
+          !("birthdate" in res.attributes) ||
           !("custom:nivel" in res.attributes) ||
-          !("custom:telefone" in res.attributes)
+          !("phone_number" in res.attributes)
         ) {
           setOpenPerfil(true)
-          console.log(res);
+          // console.log(res);
         }
       })
       .catch((err) => console.log(err));

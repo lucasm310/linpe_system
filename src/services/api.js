@@ -1,12 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-import https from 'https';
+import https from "https";
+
+const { REACT_APP_API } = process.env;
 
 const api = axios.create({
   httpsAgent: new https.Agent({
-    rejectUnauthorized: true
+    rejectUnauthorized: true,
   }),
-  baseURL: `http://localhost:5000/`,
+  baseURL: `${REACT_APP_API}/`,
 });
 
 export default api;

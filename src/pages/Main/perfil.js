@@ -34,8 +34,8 @@ function Perfil(props) {
         Auth.updateUserAttributes(resuser, {
           name: nome,
           "custom:curso": curso,
-          "custom:telefone": telefone,
-          "custom:datanascimento": dataNascimento,
+          "phone_number": telefone,
+          "birthdate": dataNascimento,
           "custom:nivel": nivel,
         })
           .then((res) => {
@@ -62,8 +62,8 @@ function Perfil(props) {
     console.log(user);
     if (user) {
       setNome(user.attributes.name);
-      setTelefone(user.attributes["custom:telefone"]);
-      setDataNascimento(user.attributes["custom:datanascimento"]);
+      setTelefone(user.attributes["phone_number"]);
+      setDataNascimento(user.attributes["birthdate"]);
       setCurso(user.attributes["custom:curso"]);
       SetNivel(user.attributes["custom:nivel"]);
     }

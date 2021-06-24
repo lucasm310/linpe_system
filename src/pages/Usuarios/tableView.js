@@ -20,10 +20,11 @@ function TableView(props) {
     { field: "data_nascimento", headerName: "Data Nascimento", flex: 0.3 },
     { field: "curso", headerName: "Curso", flex: 0.5 },
     { field: "nivel", headerName: "Nível", flex: 0.3 },
+    { field: "status", headerName: "Status", flex: 0.3 },
     {
       field: "grupos",
       headerName: "Grupos",
-      flex: 1,
+      flex: 0.8,
       renderCell: (params) => (
         <>
           {params.value.map((data, idx) => {

@@ -167,6 +167,14 @@ function CardView(props) {
                 >
                   Nível: {usuario.nivel}
                 </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                  className={classes.cardViewItens}
+                >
+                  Status: {usuario.status}
+                </Typography>
                 {usuario.grupos.map((grupo, idx) => (
                   <Grupo
                     key={idx}

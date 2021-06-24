@@ -26,14 +26,16 @@ export default function SignIn() {
   const classes = loginStyle();
   const [tipoForm, setTipoForm] = useState("signin");
   const [username, setUserName] = useState();
+  const [email, setEmail] = useState();
+
   let form = "";
 
   if (tipoForm === "signin") {
     form = <FormSignIn setTipoForm={setTipoForm} />;
   } else if (tipoForm === "signup") {
-    form = <FormSignUp setTipoForm={setTipoForm} setUserName={setUserName} />;
+    form = <FormSignUp setTipoForm={setTipoForm} setUserName={setUserName} setUserEmail={setEmail} />;
   } else if (tipoForm === "confsignup") {
-    form = <FormSignUpConfirm setTipoForm={setTipoForm} username={username} />;
+    form = <FormSignUpConfirm setTipoForm={setTipoForm} username={username} email={email} />;
   }
 
   return (
