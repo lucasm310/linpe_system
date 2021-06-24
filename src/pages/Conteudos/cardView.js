@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardActions,
@@ -20,9 +19,9 @@ import { useStyles } from "../index.style";
 function Grupo(props) {
   const { grupo } = props;
   let color = "default";
-  if (grupo == "diretoria") {
+  if (grupo === "diretoria") {
     color = "primary";
-  } else if (grupo == "ligantes") {
+  } else if (grupo === "ligantes") {
     color = "secondary";
   }
   return <Chip label={grupo} color={color} />;
@@ -33,15 +32,14 @@ function CardView(props) {
   const { conteudos, loadingpage } = props;
   const { token, groups } = useContext(UserContext);
   const { setOpenAlert, setMessage } = useContext(AlertsContext);
-  const fixMaxPage = 15;
   const [newConteudos, setNewConteudos] = useState([]);
-  const [maxPage, setMax] = useState(fixMaxPage);
+  const maxPage = 15;
   const [minPage, setMin] = useState(0);
   const [conteudosPage, setConteudosPage] = useState(
     newConteudos.slice(minPage, maxPage)
   );
   const [totalPages, setTotalPages] = useState(
-    Math.ceil(newConteudos.length / fixMaxPage)
+    Math.ceil(newConteudos.length / maxPage)
   );
 
   const handleChangePage = (event, value) => {
@@ -64,8 +62,8 @@ function CardView(props) {
       }
     });
     setNewConteudos(filterConteudo);
-    setTotalPages(Math.ceil(filterConteudo.length / fixMaxPage));
-    setConteudosPage(filterConteudo.slice(0, fixMaxPage));
+    setTotalPages(Math.ceil(filterConteudo.length / maxPage));
+    setConteudosPage(filterConteudo.slice(0, maxPage));
   };
 
   const handlerDownload = (id) => {
@@ -82,14 +80,14 @@ function CardView(props) {
       }
     });
     setNewConteudos(filterConteudo);
-    setTotalPages(Math.ceil(newConteudos.length / fixMaxPage));
-    setConteudosPage(filterConteudo.slice(0, fixMaxPage));
+    setTotalPages(Math.ceil(newConteudos.length / maxPage));
+    setConteudosPage(filterConteudo.slice(0, maxPage));
   };
 
   useEffect(() => {
     setNewConteudos(conteudos);
     setConteudosPage(conteudos.slice(minPage, maxPage));
-    setTotalPages(Math.ceil(conteudos.length / fixMaxPage));
+    setTotalPages(Math.ceil(conteudos.length / maxPage));
   }, [conteudos]);
 
   return (

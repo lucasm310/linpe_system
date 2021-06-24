@@ -16,9 +16,9 @@ import { useStyles } from "../index.style";
 function Grupo(props) {
   const { user, grupo, handleDeleteGroup } = props;
   let color = "default";
-  if (grupo == "diretoria") {
+  if (grupo === "diretoria") {
     color = "primary";
-  } else if (grupo == "ligantes") {
+  } else if (grupo === "ligantes") {
     color = "secondary";
   }
   return (
@@ -39,15 +39,14 @@ function CardView(props) {
     handlerAddGroup,
     loadingpage,
   } = props;
-  const fixMaxPage = 15;
   const [newUsuarios, setNewUsuarios] = useState([]);
-  const [maxPage, setMax] = useState(fixMaxPage);
+  const maxPage = 15;
   const [minPage, setMin] = useState(0);
   const [usuariosPage, setUsuariosPage] = useState(
     newUsuarios.slice(minPage, maxPage)
   );
   const [totalPages, setTotalPages] = useState(
-    Math.ceil(newUsuarios.length / fixMaxPage)
+    Math.ceil(newUsuarios.length / maxPage)
   );
 
   const handleChangePage = (event, value) => {
@@ -78,14 +77,14 @@ function CardView(props) {
       }
     });
     setNewUsuarios(filterUsuarios);
-    setTotalPages(Math.ceil(filterUsuarios.length / fixMaxPage));
-    setUsuariosPage(filterUsuarios.slice(0, fixMaxPage));
+    setTotalPages(Math.ceil(filterUsuarios.length / maxPage));
+    setUsuariosPage(filterUsuarios.slice(0, maxPage));
   };
 
   useEffect(() => {
     setNewUsuarios(usuarios);
     setUsuariosPage(usuarios.slice(minPage, maxPage));
-    setTotalPages(Math.ceil(usuarios.length / fixMaxPage));
+    setTotalPages(Math.ceil(usuarios.length / maxPage));
   }, [usuarios]);
 
   return (

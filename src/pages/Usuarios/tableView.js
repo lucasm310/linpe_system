@@ -29,9 +29,9 @@ function TableView(props) {
         <>
           {params.value.map((data, idx) => {
             let color = "default";
-            if (data == "diretoria") {
+            if (data === "diretoria") {
               color = "primary";
-            } else if (data == "ligantes") {
+            } else if (data === "ligantes") {
               color = "secondary";
             }
             return (

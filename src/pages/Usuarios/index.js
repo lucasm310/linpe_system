@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import { Grid, Typography, ButtonGroup, IconButton } from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import TableChartIcon from "@material-ui/icons/TableChart";
-import { useStyles } from "../index.style";
 import UserContext from "../../contexts/User/UserContext";
 import AlertsContext from "../../contexts/Alerts/AlertsContext";
 import { deleteGroup, buscarUsuarios, deleteUsuario } from "./services";
@@ -17,11 +16,10 @@ function Usuarios() {
   const [openDialog, setOpenDialog] = useState(false);
   const [userId, setUserID] = useState(false);
   const [loadingpage, setLoading] = useState(true);
-  const classes = useStyles();
   const [view, setView] = useState("cards");
 
   const handleDeleteGroup = (id, data) => {
-    if (data != "geral") {
+    if (data !== "geral") {
       deleteGroup(setUsuarios, id, data, token, setOpenAlert, setMessage, setLoading);
     }
   };

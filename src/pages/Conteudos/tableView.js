@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Grid, Chip } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import { useStyles } from "../index.style";
@@ -27,9 +27,9 @@ function TableView(props) {
       flex: 0.5,
       renderCell: (params) => {
         let color = "default";
-        if (params.value == "diretoria") {
+        if (params.value === "diretoria") {
           color = "primary";
-        } else if (params.value == "ligantes") {
+        } else if (params.value === "ligantes") {
           color = "secondary";
         }
         return (

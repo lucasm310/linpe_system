@@ -6,7 +6,7 @@ export const getEventos = (setData, setLoading, token, setOpenAlert, setMessage)
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((result) => {
-      if (result.status == 200) {
+      if (result.status === 200) {
         setData(result.data.resultados);
         setLoading(false);
       }

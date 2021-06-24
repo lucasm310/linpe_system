@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardActions,
@@ -16,15 +15,14 @@ import { useStyles } from "../index.style";
 function CardView(props) {
   const classes = useStyles();
   const { noticias, handleViewNoticia, loadingpage } = props;
-  const fixMaxPage = 15;
+  const maxPage = 15;
   const [newNoticias, setNewNoticias] = useState([]);
-  const [maxPage, setMax] = useState(fixMaxPage);
   const [minPage, setMin] = useState(0);
   const [noticiasPage, setNoticiasPage] = useState(
     newNoticias.slice(minPage, maxPage)
   );
   const [totalPages, setTotalPages] = useState(
-    Math.ceil(newNoticias.length / fixMaxPage)
+    Math.ceil(newNoticias.length / maxPage)
   );
 
   const handleChangePage = (event, value) => {
@@ -48,14 +46,14 @@ function CardView(props) {
       }
     });
     setNewNoticias(filterNoticias);
-    setTotalPages(Math.ceil(filterNoticias.length / fixMaxPage));
-    setNoticiasPage(filterNoticias.slice(0, fixMaxPage));
+    setTotalPages(Math.ceil(filterNoticias.length / maxPage));
+    setNoticiasPage(filterNoticias.slice(0, maxPage));
   };
 
   useEffect(() => {
     setNewNoticias(noticias);
     setNoticiasPage(noticias.slice(minPage, maxPage));
-    setTotalPages(Math.ceil(noticias.length / fixMaxPage));
+    setTotalPages(Math.ceil(noticias.length / maxPage));
   }, [noticias]);
 
   return (

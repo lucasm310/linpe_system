@@ -1,19 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
-  Button,
   CssBaseline,
-  TextField,
-  Link,
-  Grid,
   Box,
-  Typography,
   Container,
 } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { loginStyle } from "./index.style";
-import { Auth } from "aws-amplify";
-import UserContext from "../../contexts/User/UserContext";
 import Copyright from "./copyright";
 import FormSignIn from "./singin";
 import FormSignUp from "./signup";
@@ -22,7 +14,6 @@ import FormSignUpConfirm from "./singupconf";
 import logo from "../../assets/logo.png";
 
 export default function SignIn() {
-  const { isLoged } = useContext(UserContext);
   const classes = loginStyle();
   const [tipoForm, setTipoForm] = useState("signin");
   const [username, setUserName] = useState();

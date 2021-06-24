@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import UserContext from "./UserContext";
-import { useHistory } from "react-router-dom";
 
 import { Auth } from "aws-amplify";
 
@@ -11,7 +10,6 @@ const UserProvider = ({ children }) => {
   const [expire, setExpire] = useState(false);
   const [groups, setGroups] = useState(false);
   const [openPerfil, setOpenPerfil] = useState(false);
-  const history = useHistory();
 
   const isLoged = (res) => {
     var accestoken = res.getAccessToken();
