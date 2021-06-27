@@ -92,7 +92,7 @@ function CardView(props) {
       <Grid container direction="row" justify="space-between">
         <Grid item xs={12} sm={6} style={{ paddingLeft: 5, paddingRight: 5 }}>
           <TextField
-            id="filled-full-width"
+            id="filtra_nome"
             label="Nome"
             className={classes.cardViewSearch}
             placeholder="Filtrar pelo Nome"
@@ -103,7 +103,7 @@ function CardView(props) {
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingLeft: 5, paddingRight: 5 }}>
           <TextField
-            id="filled-full-width"
+            id="filtrar_email"
             label="Email"
             className={classes.cardViewSearch}
             placeholder="Filtrar pelo Email"

@@ -59,7 +59,6 @@ function Perfil(props) {
   };
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       setNome(user.attributes.name);
       setTelefone(user.attributes["phone_number"]);
