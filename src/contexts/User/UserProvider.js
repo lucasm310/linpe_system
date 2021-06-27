@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserContext from "./UserContext";
-
+import { useHistory } from "react-router-dom";
+import ReactGA from "react-ga";
 import { Auth } from "aws-amplify";
 
 const UserProvider = ({ children }) => {
@@ -10,6 +11,7 @@ const UserProvider = ({ children }) => {
   const [expire, setExpire] = useState(false);
   const [groups, setGroups] = useState(false);
   const [openPerfil, setOpenPerfil] = useState(false);
+  const history = useHistory();
 
   const isLoged = (res) => {
     var accestoken = res.getAccessToken();
@@ -27,7 +29,7 @@ const UserProvider = ({ children }) => {
           !("custom:nivel" in res.attributes) ||
           !("phone_number" in res.attributes)
         ) {
-          setOpenPerfil(true)
+          setOpenPerfil(true);
           // console.log(res);
         }
       })
@@ -51,6 +53,13 @@ const UserProvider = ({ children }) => {
       .catch((err) => isNotLoged(err));
   }, [logged]);
 
+  useEffect(() => {
+    return history.listen((location) => {
+      ReactGA.set({ page: location.pathname });
+      ReactGA.pageview(location.pathname);
+    });
+  }, [history]);
+
   return (
     <UserContext.Provider
       value={{
@@ -61,8 +70,8 @@ const UserProvider = ({ children }) => {
         user,
         groups,
         checkExpire,
-        openPerfil, 
-        setOpenPerfil
+        openPerfil,
+        setOpenPerfil,
       }}
     >
       {children}
