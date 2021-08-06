@@ -117,6 +117,9 @@ export const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  addDocFormControl: {
+    minWidth: 120,
+  },
   addDoc: {
     marginBottom: theme.spacing(3),
   },

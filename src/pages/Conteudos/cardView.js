@@ -13,8 +13,9 @@ import {
 import Pagination from "@material-ui/lab/Pagination";
 import UserContext from "../../contexts/User/UserContext";
 import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { deleteDocumento, downloadDoc } from "./services";
+import { deleteDocumento, downloadDoc, getConteudos } from "./services";
 import { useStyles } from "../index.style";
+import EditDocumento from "./editConteudo";
 
 function Grupo(props) {
   const { grupo } = props;
@@ -29,7 +30,7 @@ function Grupo(props) {
 
 function CardView(props) {
   const classes = useStyles();
-  const { conteudos, loadingpage } = props;
+  const { conteudos, loadingpage, setConteudos, setLoading } = props;
   const { token, groups } = useContext(UserContext);
   const { setOpenAlert, setMessage } = useContext(AlertsContext);
   const [newConteudos, setNewConteudos] = useState([]);
@@ -41,6 +42,8 @@ function CardView(props) {
   const [totalPages, setTotalPages] = useState(
     Math.ceil(newConteudos.length / maxPage)
   );
+  const [showEdit, setShowEdit] = useState(false);
+  const [conteudoEdit, setConteudoEdit] = useState({});
 
   const handleChangePage = (event, value) => {
     let min = maxPage;
@@ -55,15 +58,17 @@ function CardView(props) {
 
   const handlerDelete = (id) => {
     deleteDocumento(id, token, setOpenAlert, setMessage);
-    let filterConteudo = [];
-    conteudos.map((conteudo) => {
-      if (conteudo.id !== id) {
-        filterConteudo.push(conteudo);
-      }
-    });
-    setNewConteudos(filterConteudo);
-    setTotalPages(Math.ceil(filterConteudo.length / maxPage));
-    setConteudosPage(filterConteudo.slice(0, maxPage));
+    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
+  };
+
+  const handlerEdit = (conteudo) => {
+    setConteudoEdit(conteudo);
+    setShowEdit(true);
+  };
+
+  const handlerCloseEdit = () => {
+    setShowEdit(false);
+    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
   };
 
   const handlerDownload = (id) => {
@@ -123,21 +128,51 @@ function CardView(props) {
                   component="p"
                   className={classes.cardViewItens}
                 >
+                  Categoria: {conteudo.categoria}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                  className={classes.cardViewItens}
+                >
+                  Visibilidade: {conteudo.tipo}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                  className={classes.cardViewItens}
+                >
                   Data de cadastro: {conteudo.data_cadastro}
                 </Typography>
-                <Grupo grupo={conteudo.grupo} className={classes.cardViewItens} />
+                <Grupo
+                  grupo={conteudo.grupo}
+                  className={classes.cardViewItens}
+                />
               </CardContent>
               <CardActions>
                 {groups.includes("diretoria") && (
-                  <Button
-                    size="small"
-                    color="secondary"
-                    onClick={() => {
-                      handlerDelete(conteudo.id);
-                    }}
-                  >
-                    Apagar
-                  </Button>
+                  <>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={() => {
+                        handlerDelete(conteudo.id);
+                      }}
+                    >
+                      Apagar
+                    </Button>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={() => {
+                        handlerEdit(conteudo);
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  </>
                 )}
                 <Button
                   size="small"
@@ -162,6 +197,13 @@ function CardView(props) {
       >
         <Pagination count={totalPages} onChange={handleChangePage} />
       </Grid>
+      <EditDocumento
+        open={showEdit}
+        onClose={handlerCloseEdit}
+        documento={conteudoEdit}
+        onDelete={handlerDelete}
+        onDownload={handlerDownload}
+      />
     </>
   );
 }

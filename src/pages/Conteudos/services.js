@@ -21,7 +21,7 @@ export const getConteudos = ( setData, setLoading, token, setOpenAlert, setMessa
     });
 };
 
-export const getConteudo = (setData, id, token, setOpenAlert, setMessage) => {
+export const getConteudo = (setData, id, token, setOpenAlert, setMessage, setOpenDialog) => {
   api
     .get(`/documentos/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -31,6 +31,7 @@ export const getConteudo = (setData, id, token, setOpenAlert, setMessage) => {
         documento.id = documento.documentoID;
       });
       setData(result.data.resultados[0]);
+      setOpenDialog(true)
     })
     .catch((error) => {
       setMessage("erro api documentos");
@@ -107,6 +108,28 @@ export const novoDocumento = (
         setOpenAlert,
         setMessage
       );
+    })
+    .catch((error) => {
+      setMessage("erro api documentos");
+      setOpenAlert(true);
+      console.log(error);
+    });
+};
+
+export const editDocumento = (
+  dados,
+  documentoId,
+  history,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  api
+    .put(`/documentos/${documentoId}`, dados, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((result) => {
+      history.push("/conteudos");
     })
     .catch((error) => {
       setMessage("erro api documentos");
