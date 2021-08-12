@@ -53,7 +53,7 @@ function NewDocumento(props) {
     };
     if (categoria === "mapa_mental") {
       dados.tipo = "publico"
-      dados.grupo = "diretoria"
+      dados.grupo = "geral"
     }
     novoDocumento(dados, file, history, token, setOpenAlert, setMessage);
     onClose(true);

@@ -42,7 +42,7 @@ function EditDocumento(props) {
     };
     if (categoria === "mapa_mental") {
       dados.tipo = "publico";
-      dados.grupo = "diretoria";
+      dados.grupo = "geral";
     }
     editDocumento(
       dados,
