@@ -29,12 +29,18 @@ function Perfil(props) {
   };
 
   const handlerSalvar = () => {
+    let telefoneFormat = "";
+    if (telefone.startsWith('+55')){
+      telefoneFormat = telefone
+    } else {
+      telefoneFormat = `+55${telefone}`
+    }
     Auth.currentAuthenticatedUser()
       .then((resuser) => {
         Auth.updateUserAttributes(resuser, {
-          name: nome,
+          "name": nome,
           "custom:curso": curso,
-          "phone_number": telefone,
+          "phone_number": telefoneFormat,
           "birthdate": dataNascimento,
           "custom:nivel": nivel,
         })
