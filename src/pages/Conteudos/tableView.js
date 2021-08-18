@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { Grid, Chip } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import { useStyles } from "../index.style";
-import GetDocumento from "./DialogConteudo";
-import { getConteudos, getConteudo } from "./services";
+import EditDocumento from "./editConteudo";
+import { getConteudos, deleteDocumento, downloadDoc, getConteudo } from "./services";
 import UserContext from "../../contexts/User/UserContext";
 import AlertsContext from "../../contexts/Alerts/AlertsContext";
 
@@ -12,14 +12,12 @@ function TableView(props) {
   const { token } = useContext(UserContext);
   const { setOpenAlert, setMessage } = useContext(AlertsContext);
   const [openDialog, setOpenDialog] = useState(false);
-  const [documento, setDocumento] = useState({
-    nome: "",
-    data_cadastro: "",
-    url: {},
-  });
+  const [documento, setDocumento] = useState({});
   const classes = useStyles();
   const columns = [
     { field: "nome", headerName: "Nome", flex: 1 },
+    { field: "categoria", headerName: "Categoria", flex: 0.5 },
+    { field: "tipo", headerName: "Visibilidade", flex: 0.5 },
     { field: "data_cadastro", headerName: "Data Cadastro", flex: 0.5 },
     {
       field: "grupo",
@@ -39,16 +37,23 @@ function TableView(props) {
     },
   ];
   const handlerOpen = (data) => {
-    getConteudo(setDocumento, data.id, token, setOpenAlert, setMessage);
-    setOpenDialog(true);
+    getConteudo(setDocumento, data.id, token, setOpenAlert, setMessage, setOpenDialog);
   };
 
-  const handleCloseDialog = (reload) => {
+  const handlerCloseEdit = () => {
     setOpenDialog(false);
-    if (reload) {
-      getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
-    }
+    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
   };
+
+  const handlerDelete = (id) => {
+    deleteDocumento(id, token, setOpenAlert, setMessage);
+    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
+  };
+
+  const handlerDownload = (id) => {
+    downloadDoc(id, token);
+  };
+
   return (
     <>
       <Grid>
@@ -63,10 +68,12 @@ function TableView(props) {
           />
         </div>
       </Grid>
-      <GetDocumento
-        doc={documento}
+      <EditDocumento
         open={openDialog}
-        onClose={handleCloseDialog}
+        onClose={handlerCloseEdit}
+        documento={documento}
+        onDelete={handlerDelete}
+        onDownload={handlerDownload}
       />
     </>
   );

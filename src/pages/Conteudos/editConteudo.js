@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,17 +15,15 @@ import { useHistory } from "react-router-dom";
 import { useStyles } from "../index.style";
 import UserContext from "../../contexts/User/UserContext";
 import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { novoDocumento } from "./services";
+import { editDocumento } from "./services";
 
-function NewDocumento(props) {
-  const { onClose, open } = props;
-  const [nome, setNome] = useState("");
-  const [grupo, setGrupo] = useState("geral");
-  const [tipo, setTipo] = useState("privado");
-  const [categoria, setCategoria] = useState("");
-  const [nomefile, setNomefile] = useState("");
-  const [file, setFile] = useState();
-  const { token } = useContext(UserContext);
+function EditDocumento(props) {
+  const { onClose, open, documento, onDelete, onDownload } = props;
+  const [nome, setNome] = useState(documento.nome);
+  const [grupo, setGrupo] = useState(documento.grupo);
+  const [tipo, setTipo] = useState(documento.tipo);
+  const [categoria, setCategoria] = useState(documento.categoria);
+  const { token, groups } = useContext(UserContext);
   const { setOpenAlert, setMessage } = useContext(AlertsContext);
   const history = useHistory();
 
@@ -35,28 +33,41 @@ function NewDocumento(props) {
     onClose();
   };
 
-  const handleFile = ({ target }) => {
-    const name = target.files[0].name;
-    setNomefile(name);
-    const formData = new FormData();
-    formData.append("file", target.files[0]);
-    setFile(formData);
-  };
-
   const handlerSalvar = () => {
     let dados = {
       nome: nome,
-      nome_file: nomefile,
       grupo: grupo,
       tipo: tipo,
-      categoria: categoria
+      categoria: categoria,
     };
     if (categoria === "mapa_mental") {
-      dados.tipo = "publico"
-      dados.grupo = "geral"
+      dados.tipo = "publico";
+      dados.grupo = "geral";
     }
-    novoDocumento(dados, file, onClose, token, setOpenAlert, setMessage);
+    editDocumento(
+      dados,
+      documento.id,
+      onClose,
+      token,
+      setOpenAlert,
+      setMessage
+    );
   };
+
+  const handlerDelete = () => {
+    onDelete(documento.id);
+  };
+
+  const handlerDownload = () => {
+    onDownload(documento.id);
+  };
+
+  useEffect(() => {
+    setNome(documento.nome);
+    setGrupo(documento.grupo);
+    setTipo(documento.tipo);
+    setCategoria(documento.categoria);
+  }, [documento]);
 
   return (
     <Dialog
@@ -64,13 +75,15 @@ function NewDocumento(props) {
       aria-labelledby="form-dialog-title"
       open={open}
     >
-      <DialogTitle id="form-dialog-title">Cadastrar Conteudo</DialogTitle>
+      <DialogTitle id="form-dialog-title">Editar Conteúdo</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
+          disabled={!groups.includes("diretoria")}
           margin="dense"
           id="name"
           label="Nome"
+          value={nome}
           onChange={(data) => {
             setNome(data.target.value);
           }}
@@ -80,6 +93,7 @@ function NewDocumento(props) {
         <FormControl fullWidth={true}>
           <InputLabel id="categoria-select-label">Categoria</InputLabel>
           <Select
+            disabled={!groups.includes("diretoria")}
             labelId="categoria-select-label"
             id="categoria-select"
             value={categoria}
@@ -96,27 +110,29 @@ function NewDocumento(props) {
           </Select>
         </FormControl>
         {categoria !== "mapa_mental" && (
-        <FormControl fullWidth={true}>
-          <InputLabel id="tipo-select-label">Visibilidade</InputLabel>
-          <Select
-            labelId="tipo-select-label"
-            id="tipo-select"
-            value={tipo}
-            onChange={(data) => {
-              setTipo(data.target.value);
-            }}
-            className={classes.addDoc}
-            fullWidth={true}
-          >
-            <MenuItem value="publico">Publíco</MenuItem>
-            <MenuItem value="privado">Privado</MenuItem>
-          </Select>
-        </FormControl>
+          <FormControl fullWidth={true}>
+            <InputLabel id="tipo-select-label">Visibilidade</InputLabel>
+            <Select
+              disabled={!groups.includes("diretoria")}
+              labelId="tipo-select-label"
+              id="tipo-select"
+              value={tipo}
+              onChange={(data) => {
+                setTipo(data.target.value);
+              }}
+              className={classes.addDoc}
+              fullWidth={true}
+            >
+              <MenuItem value="publico">Publíco</MenuItem>
+              <MenuItem value="privado">Privado</MenuItem>
+            </Select>
+          </FormControl>
         )}
-        {(tipo === "privado" && categoria !== "mapa_mental") && (
+        {tipo === "privado" && categoria !== "mapa_mental" && (
           <FormControl fullWidth={true}>
             <InputLabel id="grupo-select-label">Grupo</InputLabel>
             <Select
+              disabled={!groups.includes("diretoria")}
               labelId="grupo-select-label"
               id="grupo-select"
               value={grupo}
@@ -132,39 +148,39 @@ function NewDocumento(props) {
             </Select>
           </FormControl>
         )}
-        <input
-          accept="*/*"
-          className={classes.inputUpload}
-          id="contained-button-file"
-          multiple
-          type="file"
-          onChange={(data) => {
-            handleFile(data);
-          }}
-        />
-        <label htmlFor="contained-button-file">
-          <Button
-            variant="contained"
-            color="primary"
-            component="span"
-            className={classes.addDoc}
-          >
-            Upload
-          </Button>
-        </label>
       </DialogContent>
       <DialogActions>
+        {groups.includes("diretoria") && (
+          <>
+            <Button
+              color="secondary"
+              onClick={() => {
+                handlerSalvar();
+              }}
+            >
+              Salvar
+            </Button>
+            <Button
+              color="secondary"
+              onClick={() => {
+                handlerDelete();
+              }}
+            >
+              Apagar
+            </Button>
+          </>
+        )}
         <Button
           color="primary"
           onClick={() => {
-            handlerSalvar();
+            handlerDownload();
           }}
         >
-          Salvar
+          Baixar
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default NewDocumento;
+export default EditDocumento;

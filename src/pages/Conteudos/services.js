@@ -21,7 +21,7 @@ export const getConteudos = ( setData, setLoading, token, setOpenAlert, setMessa
     });
 };
 
-export const getConteudo = (setData, id, token, setOpenAlert, setMessage) => {
+export const getConteudo = (setData, id, token, setOpenAlert, setMessage, setOpenDialog) => {
   api
     .get(`/documentos/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -31,6 +31,7 @@ export const getConteudo = (setData, id, token, setOpenAlert, setMessage) => {
         documento.id = documento.documentoID;
       });
       setData(result.data.resultados[0]);
+      setOpenDialog(true)
     })
     .catch((error) => {
       setMessage("erro api documentos");
@@ -63,7 +64,7 @@ export const downloadDoc = (id, token) => {
 export const upload = (
   documentoId,
   fileUpload,
-  history,
+  onClose,
   token,
   setOpenAlert,
   setMessage
@@ -77,7 +78,9 @@ export const upload = (
       },
     })
     .then((result) => {
-      history.push("/conteudos");
+      setMessage("Documento cadastrado");
+      setOpenAlert(true);
+      onClose(true);
     })
     .catch((error) => {
       setMessage("erro api upload");
@@ -89,7 +92,7 @@ export const upload = (
 export const novoDocumento = (
   dados,
   file,
-  history,
+  onClose,
   token,
   setOpenAlert,
   setMessage
@@ -102,13 +105,34 @@ export const novoDocumento = (
       upload(
         result.data.documentoID,
         file,
-        history,
+        onClose,
         token,
         setOpenAlert,
         setMessage
       );
     })
     .catch((error) => {
+      setMessage("erro api documentos");
+      setOpenAlert(true);
+      console.log(error);
+    });
+};
+
+export const editDocumento = (
+  dados,
+  documentoId,
+  onClose,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  api.put(`/documentos/${documentoId}`, dados, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((result) => {
+      setMessage("Documento alterado");
+      setOpenAlert(true);
+      onClose();
+    }).catch((error) => {
       setMessage("erro api documentos");
       setOpenAlert(true);
       console.log(error);
@@ -126,7 +150,7 @@ export const deleteDocumento = (
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((result) => {
-      setMessage("documento deletado");
+      setMessage("Documento apagado");
       setOpenAlert(true);
     })
     .catch((error) => {
