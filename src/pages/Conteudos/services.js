@@ -64,7 +64,7 @@ export const downloadDoc = (id, token) => {
 export const upload = (
   documentoId,
   fileUpload,
-  history,
+  onClose,
   token,
   setOpenAlert,
   setMessage
@@ -78,7 +78,9 @@ export const upload = (
       },
     })
     .then((result) => {
-      history.push("/conteudos");
+      setMessage("Documento cadastrado");
+      setOpenAlert(true);
+      onClose(true);
     })
     .catch((error) => {
       setMessage("erro api upload");
@@ -90,7 +92,7 @@ export const upload = (
 export const novoDocumento = (
   dados,
   file,
-  history,
+  onClose,
   token,
   setOpenAlert,
   setMessage
@@ -103,7 +105,7 @@ export const novoDocumento = (
       upload(
         result.data.documentoID,
         file,
-        history,
+        onClose,
         token,
         setOpenAlert,
         setMessage
@@ -119,19 +121,18 @@ export const novoDocumento = (
 export const editDocumento = (
   dados,
   documentoId,
-  history,
+  onClose,
   token,
   setOpenAlert,
   setMessage
 ) => {
-  api
-    .put(`/documentos/${documentoId}`, dados, {
+  api.put(`/documentos/${documentoId}`, dados, {
       headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((result) => {
-      history.push("/conteudos");
-    })
-    .catch((error) => {
+    }).then((result) => {
+      setMessage("Documento alterado");
+      setOpenAlert(true);
+      onClose();
+    }).catch((error) => {
       setMessage("erro api documentos");
       setOpenAlert(true);
       console.log(error);
@@ -149,7 +150,7 @@ export const deleteDocumento = (
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((result) => {
-      setMessage("documento deletado");
+      setMessage("Documento apagado");
       setOpenAlert(true);
     })
     .catch((error) => {

@@ -47,22 +47,19 @@ function EditDocumento(props) {
     editDocumento(
       dados,
       documento.id,
-      history,
+      onClose,
       token,
       setOpenAlert,
       setMessage
     );
-    onClose(true);
   };
 
   const handlerDelete = () => {
     onDelete(documento.id);
-    onClose(true);
   };
 
   const handlerDownload = () => {
     onDownload(documento.id);
-    onClose(true);
   };
 
   useEffect(() => {

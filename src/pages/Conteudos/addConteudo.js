@@ -55,8 +55,7 @@ function NewDocumento(props) {
       dados.tipo = "publico"
       dados.grupo = "geral"
     }
-    novoDocumento(dados, file, history, token, setOpenAlert, setMessage);
-    onClose(true);
+    novoDocumento(dados, file, onClose, token, setOpenAlert, setMessage);
   };
 
   return (

@@ -59,6 +59,7 @@ function CardView(props) {
   const handlerDelete = (id) => {
     deleteDocumento(id, token, setOpenAlert, setMessage);
     getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
+    setShowEdit(false);
   };
 
   const handlerEdit = (conteudo) => {
@@ -73,6 +74,7 @@ function CardView(props) {
 
   const handlerDownload = (id) => {
     downloadDoc(id, token);
+    setShowEdit(false);
   };
 
   const filter = (value) => {
