@@ -82,7 +82,7 @@ export const upload = (data, fileUpload, onClose, setOpenAlert, setMessage, setC
   formData.append("AWSAccessKeyId", data.fields_upload.AWSAccessKeyId);
   formData.append("policy", data.fields_upload.policy);
   formData.append("signature", data.fields_upload.signature);
-  formData.append("x-amz-security-token", data.fields_upload.x-amz-security-token);
+  formData.append("x-amz-security-token", data.fields_upload["x-amz-security-token"]);
   formData.append("file", fileUpload);
   console.log(formData);
   axios
