@@ -34,7 +34,7 @@ function AlertMenu() {
 
   const buscaSolicitacaoLigantes = () => {
     api
-      .get("usuarios/solicitacoes_ligante/", {
+      .get("usuarios/solicitacoes_ligante", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(result => {
