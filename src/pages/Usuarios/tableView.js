@@ -1,9 +1,9 @@
-import React from "react";
-import { Grid, Chip, IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import { DataGrid } from "@material-ui/data-grid";
-import { useStyles } from "../index.style";
+import React from "react"
+import { Grid, Chip, IconButton } from "@material-ui/core"
+import DeleteIcon from "@material-ui/icons/Delete"
+import GroupAddIcon from "@material-ui/icons/GroupAdd"
+import { DataGrid } from "@material-ui/data-grid"
+import { useStyles } from "../index.style"
 
 function TableView(props) {
   const {
@@ -12,8 +12,8 @@ function TableView(props) {
     loadingpage,
     handlerDeleteUsuario,
     handlerAddGroup,
-  } = props;
-  const classes = useStyles();
+  } = props
+  const classes = useStyles()
   const columns = [
     { field: "nome", headerName: "Nome", flex: 0.5 },
     { field: "email", headerName: "Email", flex: 0.6 },
@@ -25,14 +25,14 @@ function TableView(props) {
       field: "grupos",
       headerName: "Grupos",
       flex: 0.8,
-      renderCell: (params) => (
+      renderCell: params => (
         <>
           {params.value.map((data, idx) => {
-            let color = "default";
+            let color = "default"
             if (data === "diretoria") {
-              color = "primary";
+              color = "primary"
             } else if (data === "ligantes") {
-              color = "secondary";
+              color = "secondary"
             }
             return (
               <Chip
@@ -42,7 +42,7 @@ function TableView(props) {
                 color={color}
                 onDelete={() => handleDeleteGroup(params, data)}
               />
-            );
+            )
           })}
         </>
       ),
@@ -51,7 +51,7 @@ function TableView(props) {
       field: "",
       headerName: "",
       flex: 0.3,
-      renderCell: (params) => (
+      renderCell: params => (
         <>
           <IconButton
             aria-label="addgrupo"
@@ -68,7 +68,7 @@ function TableView(props) {
         </>
       ),
     },
-  ];
+  ]
 
   return (
     <Grid>
@@ -91,7 +91,7 @@ function TableView(props) {
         />
       </div>
     </Grid>
-  );
+  )
 }
 
-export default TableView;
+export default TableView

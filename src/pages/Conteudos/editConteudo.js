@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react"
 import {
   Dialog,
   DialogTitle,
@@ -10,28 +10,28 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-} from "@material-ui/core";
-import { useHistory } from "react-router-dom";
-import { useStyles } from "../index.style";
-import UserContext from "../../contexts/User/UserContext";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { editDocumento } from "./services";
+} from "@material-ui/core"
+import { useHistory } from "react-router-dom"
+import { useStyles } from "../index.style"
+import UserContext from "../../contexts/User/UserContext"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import { editDocumento } from "./services"
 
 function EditDocumento(props) {
-  const { onClose, open, documento, onDelete, onDownload } = props;
-  const [nome, setNome] = useState(documento.nome);
-  const [grupo, setGrupo] = useState(documento.grupo);
-  const [tipo, setTipo] = useState(documento.tipo);
-  const [categoria, setCategoria] = useState(documento.categoria);
-  const { token, groups } = useContext(UserContext);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
-  const history = useHistory();
+  const { onClose, open, documento, onDelete, onDownload } = props
+  const [nome, setNome] = useState(documento.nome)
+  const [grupo, setGrupo] = useState(documento.grupo)
+  const [tipo, setTipo] = useState(documento.tipo)
+  const [categoria, setCategoria] = useState(documento.categoria)
+  const { token, groups } = useContext(UserContext)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
+  const history = useHistory()
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   const handlerSalvar = () => {
     let dados = {
@@ -39,35 +39,28 @@ function EditDocumento(props) {
       grupo: grupo,
       tipo: tipo,
       categoria: categoria,
-    };
-    if (categoria === "mapa_mental") {
-      dados.tipo = "publico";
-      dados.grupo = "geral";
     }
-    editDocumento(
-      dados,
-      documento.id,
-      onClose,
-      token,
-      setOpenAlert,
-      setMessage
-    );
-  };
+    if (categoria === "mapa_mental") {
+      dados.tipo = "publico"
+      dados.grupo = "geral"
+    }
+    editDocumento(dados, documento.id, onClose, token, setOpenAlert, setMessage)
+  }
 
   const handlerDelete = () => {
-    onDelete(documento.id);
-  };
+    onDelete(documento.id)
+  }
 
   const handlerDownload = () => {
-    onDownload(documento.id);
-  };
+    onDownload(documento.id)
+  }
 
   useEffect(() => {
-    setNome(documento.nome);
-    setGrupo(documento.grupo);
-    setTipo(documento.tipo);
-    setCategoria(documento.categoria);
-  }, [documento]);
+    setNome(documento.nome)
+    setGrupo(documento.grupo)
+    setTipo(documento.tipo)
+    setCategoria(documento.categoria)
+  }, [documento])
 
   return (
     <Dialog
@@ -84,8 +77,8 @@ function EditDocumento(props) {
           id="name"
           label="Nome"
           value={nome}
-          onChange={(data) => {
-            setNome(data.target.value);
+          onChange={data => {
+            setNome(data.target.value)
           }}
           className={classes.addDoc}
           fullWidth={true}
@@ -97,8 +90,8 @@ function EditDocumento(props) {
             labelId="categoria-select-label"
             id="categoria-select"
             value={categoria}
-            onChange={(data) => {
-              setCategoria(data.target.value);
+            onChange={data => {
+              setCategoria(data.target.value)
             }}
             className={classes.addDoc}
             fullWidth={true}
@@ -117,8 +110,8 @@ function EditDocumento(props) {
               labelId="tipo-select-label"
               id="tipo-select"
               value={tipo}
-              onChange={(data) => {
-                setTipo(data.target.value);
+              onChange={data => {
+                setTipo(data.target.value)
               }}
               className={classes.addDoc}
               fullWidth={true}
@@ -136,8 +129,8 @@ function EditDocumento(props) {
               labelId="grupo-select-label"
               id="grupo-select"
               value={grupo}
-              onChange={(data) => {
-                setGrupo(data.target.value);
+              onChange={data => {
+                setGrupo(data.target.value)
               }}
               className={classes.addDoc}
               fullWidth={true}
@@ -155,7 +148,7 @@ function EditDocumento(props) {
             <Button
               color="secondary"
               onClick={() => {
-                handlerSalvar();
+                handlerSalvar()
               }}
             >
               Salvar
@@ -163,7 +156,7 @@ function EditDocumento(props) {
             <Button
               color="secondary"
               onClick={() => {
-                handlerDelete();
+                handlerDelete()
               }}
             >
               Apagar
@@ -173,14 +166,14 @@ function EditDocumento(props) {
         <Button
           color="primary"
           onClick={() => {
-            handlerDownload();
+            handlerDownload()
           }}
         >
           Baixar
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 
-export default EditDocumento;
+export default EditDocumento

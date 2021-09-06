@@ -1,28 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 import {
   Dialog,
   DialogTitle,
   List,
   ListItem,
   ListItemText,
-} from "@material-ui/core";
-import UserContext from "../../contexts/User/UserContext";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { addGroupGroup } from "./services";
+} from "@material-ui/core"
+import UserContext from "../../contexts/User/UserContext"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import { addGroupGroup } from "./services"
 
 function AddGroupDialog(props) {
-  const { onClose, userId, open } = props;
-  const { token } = useContext(UserContext);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
+  const { onClose, userId, open } = props
+  const { token } = useContext(UserContext)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
 
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
 
-  const handleListItemClick = (value) => {
-    addGroupGroup(userId, value, token, setOpenAlert, setMessage);
-    onClose();
-  };
+  const handleListItemClick = value => {
+    addGroupGroup(userId, value, token, setOpenAlert, setMessage)
+    onClose()
+  }
 
   return (
     <Dialog
@@ -48,7 +48,7 @@ function AddGroupDialog(props) {
         </ListItem>
       </List>
     </Dialog>
-  );
+  )
 }
 
-export default AddGroupDialog;
+export default AddGroupDialog

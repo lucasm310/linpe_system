@@ -1,42 +1,40 @@
-import React, { useState, useContext } from "react";
-import { Typography, Link, TextField, Button, Grid } from "@material-ui/core";
-import { loginStyle } from "./index.style";
-import { Auth } from "aws-amplify";
-import UserContext from "../../contexts/User/UserContext";
+import React, { useState, useContext } from "react"
+import { Typography, Link, TextField, Button, Grid } from "@material-ui/core"
+import { loginStyle } from "./index.style"
+import { Auth } from "aws-amplify"
+import UserContext from "../../contexts/User/UserContext"
 
 export default function FormSignIn(props) {
-  const { setTipoForm } = props;
-  const [senha, setSenha] = useState();
-  const [email, setEmail] = useState();
-  const [erroField, setErroField] = useState(false);
-  const [erroMessage, setErroMessage] = useState();
-  const classes = loginStyle();
-  const { isLoged } = useContext(UserContext);
+  const { setTipoForm } = props
+  const [senha, setSenha] = useState()
+  const [email, setEmail] = useState()
+  const [erroField, setErroField] = useState(false)
+  const [erroMessage, setErroMessage] = useState()
+  const classes = loginStyle()
+  const { isLoged } = useContext(UserContext)
 
   async function signIn() {
     if (email === undefined || senha === undefined) {
-      setErroField(true);
-      setErroMessage(
-        "Seu email ou senha não foram preenchidos"
-      );
+      setErroField(true)
+      setErroMessage("Seu email ou senha não foram preenchidos")
     } else {
       try {
-        await Auth.signIn(email, senha);
+        await Auth.signIn(email, senha)
         Auth.currentSession()
-          .then((res) => isLoged(res))
-          .catch((err) => console.log(err));
-        console.log("sign in success!");
+          .then(res => isLoged(res))
+          .catch(err => console.log(err))
+        console.log("sign in success!")
       } catch (err) {
-        console.log("error signing up..", err);
-        setErroField(true);
+        console.log("error signing up..", err)
+        setErroField(true)
         if (err.code === "UserNotConfirmedException") {
-          setErroMessage("O email não foi confirmado!");
+          setErroMessage("O email não foi confirmado!")
         } else if (err.code === "UserNotFoundException") {
-          setErroMessage("Email não cadastrado");
+          setErroMessage("Email não cadastrado")
         } else {
           setErroMessage(
             "Erro ao realizar o login, por favor confira seu email e senha."
-          );
+          )
         }
       }
     }
@@ -58,7 +56,7 @@ export default function FormSignIn(props) {
           name="email"
           autoComplete="email"
           autoFocus
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={event => setEmail(event.target.value)}
           error={erroField}
         />
         <TextField
@@ -71,7 +69,7 @@ export default function FormSignIn(props) {
           type="password"
           id="password"
           autoComplete="current-password"
-          onChange={(event) => setSenha(event.target.value)}
+          onChange={event => setSenha(event.target.value)}
           error={erroField}
           helperText={erroField && erroMessage}
         />
@@ -112,5 +110,5 @@ export default function FormSignIn(props) {
         </Grid>
       </form>
     </>
-  );
+  )
 }

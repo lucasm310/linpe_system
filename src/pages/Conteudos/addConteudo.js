@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from "react"
 import {
   Dialog,
   DialogTitle,
@@ -12,37 +12,37 @@ import {
   InputLabel,
   CircularProgress,
   Box,
-} from "@material-ui/core";
-import { useHistory } from "react-router-dom";
-import { useStyles } from "../index.style";
-import UserContext from "../../contexts/User/UserContext";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { novoDocumento } from "./services";
+} from "@material-ui/core"
+import { useHistory } from "react-router-dom"
+import { useStyles } from "../index.style"
+import UserContext from "../../contexts/User/UserContext"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import { novoDocumento } from "./services"
 
 function NewDocumento(props) {
-  const { onClose, open } = props;
-  const [nome, setNome] = useState("");
-  const [grupo, setGrupo] = useState("geral");
-  const [tipo, setTipo] = useState("privado");
-  const [categoria, setCategoria] = useState("");
-  const [nomefile, setNomefile] = useState("");
-  const [file, setFile] = useState();
-  const { token } = useContext(UserContext);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
-  const [carregando, setCarregando] = useState(false);
-  const history = useHistory();
+  const { onClose, open } = props
+  const [nome, setNome] = useState("")
+  const [grupo, setGrupo] = useState("geral")
+  const [tipo, setTipo] = useState("privado")
+  const [categoria, setCategoria] = useState("")
+  const [nomefile, setNomefile] = useState("")
+  const [file, setFile] = useState()
+  const { token } = useContext(UserContext)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
+  const [carregando, setCarregando] = useState(false)
+  const history = useHistory()
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   const handleFile = ({ target }) => {
-    const name = target.files[0].name;
-    setNomefile(name);
-    setFile(target.files[0]);
-  };
+    const name = target.files[0].name
+    setNomefile(name)
+    setFile(target.files[0])
+  }
 
   const handlerSalvar = () => {
     let dados = {
@@ -51,14 +51,22 @@ function NewDocumento(props) {
       grupo: grupo,
       tipo: tipo,
       categoria: categoria,
-    };
+    }
     if (categoria === "mapa_mental") {
-      dados.tipo = "publico";
-      dados.grupo = "geral";
+      dados.tipo = "publico"
+      dados.grupo = "geral"
     }
     setCarregando(true)
-    novoDocumento(dados, file, onClose, token, setOpenAlert, setMessage, setCarregando);
-  };
+    novoDocumento(
+      dados,
+      file,
+      onClose,
+      token,
+      setOpenAlert,
+      setMessage,
+      setCarregando
+    )
+  }
 
   return (
     <Dialog
@@ -68,11 +76,11 @@ function NewDocumento(props) {
     >
       <DialogTitle id="form-dialog-title">Cadastrar Conteudo</DialogTitle>
       {carregando === true && (
-         <DialogContent>
-           <Box display="flex" justifyContent="center" >
-            <CircularProgress/>
-           </Box>
-         </DialogContent>
+        <DialogContent>
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        </DialogContent>
       )}
       {carregando === false && (
         <DialogContent>
@@ -81,8 +89,8 @@ function NewDocumento(props) {
             margin="dense"
             id="name"
             label="Nome"
-            onChange={(data) => {
-              setNome(data.target.value);
+            onChange={data => {
+              setNome(data.target.value)
             }}
             className={classes.addDoc}
             fullWidth={true}
@@ -93,8 +101,8 @@ function NewDocumento(props) {
               labelId="categoria-select-label"
               id="categoria-select"
               value={categoria}
-              onChange={(data) => {
-                setCategoria(data.target.value);
+              onChange={data => {
+                setCategoria(data.target.value)
               }}
               className={classes.addDoc}
               fullWidth={true}
@@ -112,8 +120,8 @@ function NewDocumento(props) {
                 labelId="tipo-select-label"
                 id="tipo-select"
                 value={tipo}
-                onChange={(data) => {
-                  setTipo(data.target.value);
+                onChange={data => {
+                  setTipo(data.target.value)
                 }}
                 className={classes.addDoc}
                 fullWidth={true}
@@ -130,8 +138,8 @@ function NewDocumento(props) {
                 labelId="grupo-select-label"
                 id="grupo-select"
                 value={grupo}
-                onChange={(data) => {
-                  setGrupo(data.target.value);
+                onChange={data => {
+                  setGrupo(data.target.value)
                 }}
                 className={classes.addDoc}
                 fullWidth={true}
@@ -148,8 +156,8 @@ function NewDocumento(props) {
             id="contained-button-file"
             multiple
             type="file"
-            onChange={(data) => {
-              handleFile(data);
+            onChange={data => {
+              handleFile(data)
             }}
           />
           <label htmlFor="contained-button-file">
@@ -168,7 +176,7 @@ function NewDocumento(props) {
         <Button
           color="primary"
           onClick={() => {
-            handlerSalvar();
+            handlerSalvar()
           }}
           disabled={carregando}
         >
@@ -176,7 +184,7 @@ function NewDocumento(props) {
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 
-export default NewDocumento;
+export default NewDocumento

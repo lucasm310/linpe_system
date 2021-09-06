@@ -1,25 +1,40 @@
-import api from "../../services/api";
+import api from "../../services/api"
 
-export const getEventos = (setData, setLoading, token, setOpenAlert, setMessage) => {
-  setLoading(true);
-  api.get("/eventos/", {
+export const getEventos = (
+  setData,
+  setLoading,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  setLoading(true)
+  api
+    .get("/eventos/", {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
+    .then(result => {
       if (result.status === 200) {
-        setData(result.data.resultados);
-        setLoading(false);
+        setData(result.data.resultados)
+        setLoading(false)
       }
     })
-    .catch((error) => {
-      setMessage("erro api eventos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api eventos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
-export const novoEvento = ( dados, setData, setLoading, token, setOpenAlert, setMessage) => {
-  api.post(
+export const novoEvento = (
+  dados,
+  setData,
+  setLoading,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  api
+    .post(
       "/eventos/",
       {
         data_inicio: Math.floor(+new Date(dados.startDate) / 1000),
@@ -33,54 +48,71 @@ export const novoEvento = ( dados, setData, setLoading, token, setOpenAlert, set
         headers: { Authorization: `Bearer ${token}` },
       }
     )
-    .then((result) => {
-      getEventos(setData, setLoading, token, setOpenAlert, setMessage);
+    .then(result => {
+      getEventos(setData, setLoading, token, setOpenAlert, setMessage)
     })
-    .catch((error) => {
-      setMessage("erro api eventos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api eventos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
-export const deleteEvento = ( eventoID, setData, setLoading, token, setOpenAlert, setMessage) => {
-  api.delete(`/eventos/${eventoID}`, {
+export const deleteEvento = (
+  eventoID,
+  setData,
+  setLoading,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  api
+    .delete(`/eventos/${eventoID}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
-      getEventos(setData, setLoading, token);
+    .then(result => {
+      getEventos(setData, setLoading, token)
     })
-    .catch((error) => {
-      setMessage("erro api eventos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api eventos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
-export const atualizaEvento = ( eventoID, dados, setData, setLoading, token, setOpenAlert, setMessage) => {
-  var dadosMap = {};
-  Object.keys(dados).map((key) => {
+export const atualizaEvento = (
+  eventoID,
+  dados,
+  setData,
+  setLoading,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  var dadosMap = {}
+  Object.keys(dados).map(key => {
     if (key === "title") {
-      dadosMap["nome"] = dados[key];
+      dadosMap["nome"] = dados[key]
     } else if (key === "notes") {
-      dadosMap["descricao"] = dados[key];
+      dadosMap["descricao"] = dados[key]
     } else if (key === "startDate") {
-      dadosMap["data_inicio"] = dados[key];
+      dadosMap["data_inicio"] = dados[key]
     } else if (key === "endDate") {
-      dadosMap["data_fim"] = dados[key];
+      dadosMap["data_fim"] = dados[key]
     } else {
-      dadosMap[key] = dados[key];
+      dadosMap[key] = dados[key]
     }
-  });
-  api.put(`/eventos/${eventoID}`, dadosMap, {
+  })
+  api
+    .put(`/eventos/${eventoID}`, dadosMap, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
-      getEventos(setData, setLoading, token, setOpenAlert, setMessage);
+    .then(result => {
+      getEventos(setData, setLoading, token, setOpenAlert, setMessage)
     })
-    .catch((error) => {
-      setMessage("erro api eventos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api eventos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}

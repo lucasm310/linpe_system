@@ -1,36 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { Grid, Typography, ButtonGroup, IconButton } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import TableChartIcon from "@material-ui/icons/TableChart";
-import { buscarNoticias } from "./services";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import TableView from "./tableView";
-import CardView from "./cardView";
+import React, { useState, useEffect, useContext } from "react"
+import { useHistory } from "react-router-dom"
+import { Grid, Typography, ButtonGroup, IconButton } from "@material-ui/core"
+import AddIcon from "@material-ui/icons/Add"
+import DashboardIcon from "@material-ui/icons/Dashboard"
+import TableChartIcon from "@material-ui/icons/TableChart"
+import { buscarNoticias } from "./services"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import TableView from "./tableView"
+import CardView from "./cardView"
 
 function Noticias() {
-  const [noticias, setNoticias] = useState([]);
-  const history = useHistory();
-  const [loadingpage, setLoading] = useState(true);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
-  const [view, setView] = useState("cards");
+  const [noticias, setNoticias] = useState([])
+  const history = useHistory()
+  const [loadingpage, setLoading] = useState(true)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
+  const [view, setView] = useState("cards")
 
   const handleOpenForm = () => {
-    history.push("/novanoticia");
-  };
+    history.push("/novanoticia")
+  }
 
-  const handleViewNoticia = (noticia) => {
-    history.push("/novanoticia", noticia);
-  };
+  const handleViewNoticia = noticia => {
+    history.push("/novanoticia", noticia)
+  }
 
-  const handleChangeView = (data) => {
-    setView(data);
-  };
+  const handleChangeView = data => {
+    setView(data)
+  }
 
   useEffect(() => {
-    buscarNoticias(setNoticias, setLoading, setOpenAlert, setMessage);
-  }, [view]);
+    buscarNoticias(setNoticias, setLoading, setOpenAlert, setMessage)
+  }, [view])
 
   return (
     <>
@@ -80,7 +80,7 @@ function Noticias() {
         />
       )}
     </>
-  );
+  )
 }
 
-export default Noticias;
+export default Noticias
