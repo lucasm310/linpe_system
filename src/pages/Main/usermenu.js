@@ -75,7 +75,7 @@ export default function UserMenu() {
   const solicitar_ligantes = event => {
     api
       .post(
-        "usuarios/solicitacoes_ligante",
+        "usuarios/solicitacoes_ligante/",
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
