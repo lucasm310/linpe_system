@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { Typography, TextField, Button } from "@material-ui/core";
-import { loginStyle } from "./index.style";
-import { Auth } from "aws-amplify";
+import React, { useState } from "react"
+import { Typography, TextField, Button } from "@material-ui/core"
+import { loginStyle } from "./index.style"
+import { Auth } from "aws-amplify"
 
 export default function FormSignUpConfirm(props) {
-  const { setTipoForm, username, email } = props;
-  const [erroField, setErroField] = useState(false);
-  const [codigo, setCodigo] = useState();
-  const classes = loginStyle();
+  const { setTipoForm, username, email } = props
+  const [erroField, setErroField] = useState(false)
+  const [codigo, setCodigo] = useState()
+  const classes = loginStyle()
 
   async function confirmSignUp(event) {
     event.preventDefault()
     try {
-      await Auth.confirmSignUp(username, codigo);
-      console.log("confirm sign up success!");
-      setTipoForm("signin");
+      await Auth.confirmSignUp(username, codigo)
+      console.log("confirm sign up success!")
+      setTipoForm("signin")
     } catch (err) {
       setErroField(true)
-      console.log("error signing up..", err);
+      console.log("error signing up..", err)
     }
   }
   return (
@@ -25,7 +25,7 @@ export default function FormSignUpConfirm(props) {
       <Typography component="h1" variant="h5">
         Confirmar Cadastro
       </Typography>
-      <form className={classes.form} onSubmit={(event) => confirmSignUp(event)}>
+      <form className={classes.form} onSubmit={event => confirmSignUp(event)}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -36,9 +36,13 @@ export default function FormSignUpConfirm(props) {
           name="codigo"
           autoComplete="codigo"
           autoFocus
-          onChange={(event) => setCodigo(event.target.value)}
+          onChange={event => setCodigo(event.target.value)}
           error={erroField}
-          helperText={erroField ? "Código invalido" : `Enviamos um email para: ${email} com o código de verificação.`}
+          helperText={
+            erroField
+              ? "Código invalido"
+              : `Enviamos um email para: ${email} com o código de verificação.`
+          }
         />
         <Button
           type="submit"
@@ -51,5 +55,5 @@ export default function FormSignUpConfirm(props) {
         </Button>
       </form>
     </>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles"
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 export const theme = createMuiTheme({
   palette: {
@@ -14,9 +14,9 @@ export const theme = createMuiTheme({
       main: "#85D5DE",
     },
   },
-});
+})
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
   },
@@ -170,4 +170,7 @@ export const useStyles = makeStyles((theme) => ({
   cardViewPaginator: {
     marginTop: 25,
   },
-}));
+  alertsItem: {
+    paddingLeft: theme.spacing(3),
+  },
+}))

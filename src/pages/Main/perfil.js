@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react"
 import {
   Dialog,
   DialogTitle,
@@ -9,70 +9,70 @@ import {
   InputLabel,
   MenuItem,
   Select,
-} from "@material-ui/core";
-import UserContext from "../../contexts/User/UserContext";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { Auth } from "aws-amplify";
+} from "@material-ui/core"
+import UserContext from "../../contexts/User/UserContext"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import { Auth } from "aws-amplify"
 
 function Perfil(props) {
-  const { onClose, open } = props;
-  const [nome, setNome] = useState("");
-  const [telefone, setTelefone] = useState();
-  const [dataNascimento, setDataNascimento] = useState();
-  const [curso, setCurso] = useState();
-  const [nivel, SetNivel] = useState();
-  const { user } = useContext(UserContext);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
+  const { onClose, open } = props
+  const [nome, setNome] = useState("")
+  const [telefone, setTelefone] = useState()
+  const [dataNascimento, setDataNascimento] = useState()
+  const [curso, setCurso] = useState()
+  const [nivel, SetNivel] = useState()
+  const { user } = useContext(UserContext)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
 
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   const handlerSalvar = () => {
-    let telefoneFormat = "";
-    if (telefone.startsWith('+55')){
+    let telefoneFormat = ""
+    if (telefone.startsWith("+55")) {
       telefoneFormat = telefone
     } else {
       telefoneFormat = `+55${telefone}`
     }
     Auth.currentAuthenticatedUser()
-      .then((resuser) => {
+      .then(resuser => {
         Auth.updateUserAttributes(resuser, {
-          "name": nome,
+          name: nome,
           "custom:curso": curso,
-          "phone_number": telefoneFormat,
-          "birthdate": dataNascimento,
+          phone_number: telefoneFormat,
+          birthdate: dataNascimento,
           "custom:nivel": nivel,
         })
-          .then((res) => {
-            setMessage("perfil alterado");
-            setOpenAlert(true);
-            onClose();
+          .then(res => {
+            setMessage("perfil alterado")
+            setOpenAlert(true)
+            onClose()
           })
-          .catch((res) => {
-            setMessage("erro na api perfil");
-            setOpenAlert(true);
-            console.error(`erro ao atualizar user: ${res}`);
-            onClose();
-          });
+          .catch(res => {
+            setMessage("erro na api perfil")
+            setOpenAlert(true)
+            console.error(`erro ao atualizar user: ${res}`)
+            onClose()
+          })
       })
-      .catch((err) => {
-        setMessage("erro na api perfil");
-        setOpenAlert(true);
-        console.log(`erro ao buscar sessao ${err}`);
-        onClose();
-      });
-  };
+      .catch(err => {
+        setMessage("erro na api perfil")
+        setOpenAlert(true)
+        console.log(`erro ao buscar sessao ${err}`)
+        onClose()
+      })
+  }
 
   useEffect(() => {
     if (user) {
-      setNome(user.attributes.name);
-      setTelefone(user.attributes["phone_number"]);
-      setDataNascimento(user.attributes["birthdate"]);
-      setCurso(user.attributes["custom:curso"]);
-      SetNivel(user.attributes["custom:nivel"]);
+      setNome(user.attributes.name)
+      setTelefone(user.attributes["phone_number"])
+      setDataNascimento(user.attributes["birthdate"])
+      setCurso(user.attributes["custom:curso"])
+      SetNivel(user.attributes["custom:nivel"])
     }
-  }, [user]);
+  }, [user])
 
   return (
     <Dialog
@@ -89,8 +89,8 @@ function Perfil(props) {
           id="name"
           label="Nome"
           value={nome}
-          onChange={(data) => {
-            setNome(data.target.value);
+          onChange={data => {
+            setNome(data.target.value)
           }}
           required
           fullWidth
@@ -111,8 +111,8 @@ function Perfil(props) {
           type="date"
           label="Data Nascimento"
           value={dataNascimento}
-          onChange={(data) => {
-            setDataNascimento(data.target.value);
+          onChange={data => {
+            setDataNascimento(data.target.value)
           }}
           InputLabelProps={{
             shrink: true,
@@ -126,8 +126,8 @@ function Perfil(props) {
           id="telefone"
           label="Telefone"
           value={telefone}
-          onChange={(data) => {
-            setTelefone(data.target.value);
+          onChange={data => {
+            setTelefone(data.target.value)
           }}
           required
           fullWidth
@@ -138,8 +138,8 @@ function Perfil(props) {
           id="curso"
           label="Curso"
           value={curso}
-          onChange={(data) => {
-            setCurso(data.target.value);
+          onChange={data => {
+            setCurso(data.target.value)
           }}
           required
           fullWidth
@@ -150,8 +150,8 @@ function Perfil(props) {
           margin="dense"
           labelId="nivel-especializacao"
           id="nivel-especializacao"
-          onChange={(event) => {
-            SetNivel(event.target.value);
+          onChange={event => {
+            SetNivel(event.target.value)
           }}
           value={nivel}
           required
@@ -171,14 +171,14 @@ function Perfil(props) {
         <Button
           color="primary"
           onClick={() => {
-            handlerSalvar();
+            handlerSalvar()
           }}
         >
           Salvar
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 
-export default Perfil;
+export default Perfil

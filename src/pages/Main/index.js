@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
-import { Route, Switch } from "react-router-dom";
-import clsx from "clsx";
+import React, { useState, useContext } from "react"
+import { Route, Switch } from "react-router-dom"
+import clsx from "clsx"
 import {
   CssBaseline,
   AppBar,
-  Badge,
   Container,
   Divider,
   Drawer,
@@ -13,34 +12,34 @@ import {
   Toolbar,
   Typography,
   Snackbar,
-} from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/core/styles";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+} from "@material-ui/core"
+import { ThemeProvider } from "@material-ui/core/styles"
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
+import MenuIcon from "@material-ui/icons/Menu"
 
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import MenuList from "./listitems";
-import { useStyles, theme } from "../index.style";
-import UserMenu from "./usermenu";
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import MenuList from "./listitems"
+import { useStyles, theme } from "../index.style"
+import UserMenu from "./usermenu"
+import AlertMenu from "./alermenu"
 
-import Eventos from "../Eventos";
-import Usuarios from "../Usuarios";
-import Conteudos from "../Conteudos";
-import Noticias from "../Noticias";
-import NovaNoticia from "../NovaNoticia";
+import Eventos from "../Eventos"
+import Usuarios from "../Usuarios"
+import Conteudos from "../Conteudos"
+import Noticias from "../Noticias"
+import NovaNoticia from "../NovaNoticia"
 
 function Main() {
-  const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const { message, openAlert, handleClose } = useContext(AlertsContext);
+  const classes = useStyles()
+  const [open, setOpen] = useState(true)
+  const { message, openAlert, handleClose } = useContext(AlertsContext)
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,11 +71,7 @@ function Main() {
             >
               LINPE
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <AlertMenu />
             <UserMenu />
           </Toolbar>
         </AppBar>
@@ -117,7 +112,7 @@ function Main() {
         />
       </div>
     </ThemeProvider>
-  );
+  )
 }
 
-export default Main;
+export default Main

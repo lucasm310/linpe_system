@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Typography,
   Link,
@@ -8,28 +8,28 @@ import {
   Select,
   MenuItem,
   InputLabel,
-} from "@material-ui/core";
-import { loginStyle } from "./index.style";
-import { Auth } from "aws-amplify";
+} from "@material-ui/core"
+import { loginStyle } from "./index.style"
+import { Auth } from "aws-amplify"
 
 export default function FormSignUp(props) {
-  const { setTipoForm, setUserName, setUserEmail } = props;
-  const [senha, setSenha] = useState();
-  const [email, setEmail] = useState();
-  const [nome, setNome] = useState();
-  const [telefone, setTelefone] = useState();
-  const [dataNascimento, setDataNascimento] = useState();
-  const [curso, setCurso] = useState();
-  const [nivel, SetNivel] = useState("bacharelado");
+  const { setTipoForm, setUserName, setUserEmail } = props
+  const [senha, setSenha] = useState()
+  const [email, setEmail] = useState()
+  const [nome, setNome] = useState()
+  const [telefone, setTelefone] = useState()
+  const [dataNascimento, setDataNascimento] = useState()
+  const [curso, setCurso] = useState()
+  const [nivel, SetNivel] = useState("bacharelado")
 
-  const [erroField, setErroField] = useState(false);
-  const [erroFieldEmail, setErroFieldEmail] = useState(false);
-  const classes = loginStyle();
+  const [erroField, setErroField] = useState(false)
+  const [erroFieldEmail, setErroFieldEmail] = useState(false)
+  const classes = loginStyle()
   async function signUp(event) {
-    event.preventDefault();
-    let telefoneFormatado = telefone;
+    event.preventDefault()
+    let telefoneFormatado = telefone
     if (telefone.startsWith("+55") === false) {
-      telefoneFormatado = `+55${telefone}`;
+      telefoneFormatado = `+55${telefone}`
     }
     try {
       await Auth.signUp({
@@ -43,20 +43,20 @@ export default function FormSignUp(props) {
           "custom:curso": curso,
           "custom:nivel": nivel,
         },
-      }).then((res) => {
+      }).then(res => {
         // console.log(res);
-        setUserName(res.userSub);
+        setUserName(res.userSub)
         setUserEmail(email)
-        console.log("sign up success!");
-        setTipoForm("confsignup");
-      });
+        console.log("sign up success!")
+        setTipoForm("confsignup")
+      })
     } catch (err) {
       if (err.code === "UsernameExistsException") {
-        setErroFieldEmail(true);
+        setErroFieldEmail(true)
       } else {
-        setErroField(true);
+        setErroField(true)
       }
-      console.log("error signing up..", err);
+      console.log("error signing up..", err)
     }
   }
 
@@ -68,7 +68,7 @@ export default function FormSignUp(props) {
       <form
         className={classes.form}
         noValidate={false}
-        onSubmit={(event) => signUp(event)}
+        onSubmit={event => signUp(event)}
       >
         <TextField
           variant="outlined"
@@ -79,7 +79,7 @@ export default function FormSignUp(props) {
           label="Nome"
           name="nome"
           autoComplete="nome"
-          onChange={(event) => setNome(event.target.value)}
+          onChange={event => setNome(event.target.value)}
           error={erroField}
         />
         <TextField
@@ -91,7 +91,7 @@ export default function FormSignUp(props) {
           id="data_nascimento"
           label="Data Nascimento"
           name="data_nascimento"
-          onChange={(event) => setDataNascimento(event.target.value)}
+          onChange={event => setDataNascimento(event.target.value)}
           error={erroField}
           InputLabelProps={{
             shrink: true,
@@ -106,7 +106,7 @@ export default function FormSignUp(props) {
           label="Telefone"
           name="telefone"
           autoComplete="telefone"
-          onChange={(event) => setTelefone(event.target.value)}
+          onChange={event => setTelefone(event.target.value)}
           error={erroField}
           helperText="DDD+Número, ex: 1499998888"
         />
@@ -120,7 +120,7 @@ export default function FormSignUp(props) {
           label="Curso"
           name="curso"
           autoComplete="curso"
-          onChange={(event) => setCurso(event.target.value)}
+          onChange={event => setCurso(event.target.value)}
           error={erroField}
         />
         <InputLabel id="nivel-especializacao">Nível Especialização</InputLabel>
@@ -128,8 +128,8 @@ export default function FormSignUp(props) {
           variant="outlined"
           labelId="nivel-especializacao"
           id="nivel-especializacao"
-          onChange={(event) => {
-            SetNivel(event.target.value);
+          onChange={event => {
+            SetNivel(event.target.value)
           }}
           required
           fullWidth
@@ -154,7 +154,7 @@ export default function FormSignUp(props) {
           name="email"
           autoComplete="email"
           type="email"
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={event => setEmail(event.target.value)}
           error={erroFieldEmail}
           helperText={erroFieldEmail && "Email já cadastrado"}
         />
@@ -168,7 +168,7 @@ export default function FormSignUp(props) {
           type="password"
           id="password"
           autoComplete="current-password"
-          onChange={(event) => setSenha(event.target.value)}
+          onChange={event => setSenha(event.target.value)}
           error={erroField}
           helperText={
             erroField
@@ -203,5 +203,5 @@ export default function FormSignUp(props) {
         </Grid>
       </form>
     </>
-  );
+  )
 }

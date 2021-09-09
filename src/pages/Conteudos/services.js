@@ -1,93 +1,121 @@
-import api from "../../services/api";
+import api from "../../services/api"
+import axios from "axios"
 
-export const getConteudos = ( setData, setLoading, token, setOpenAlert, setMessage) => {
-  api.get("/documentos/", {
+export const getConteudos = (
+  setData,
+  setLoading,
+  token,
+  setOpenAlert,
+  setMessage
+) => {
+  api
+    .get("/documentos/", {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
-      result.data.resultados.map((documento) => {
-        documento.id = documento.documentoID;
+    .then(result => {
+      result.data.resultados.map(documento => {
+        documento.id = documento.documentoID
         documento.data_cadastro = new Date(
           documento.data_cadastro
-        ).toLocaleString("default");
-      });
-      setData(result.data.resultados);
-      setLoading(false);
+        ).toLocaleString("default")
+      })
+      setData(result.data.resultados)
+      setLoading(false)
     })
-    .catch((error) => {
-      setMessage("erro api documentos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api documentos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
-export const getConteudo = (setData, id, token, setOpenAlert, setMessage, setOpenDialog) => {
+export const getConteudo = (
+  setData,
+  id,
+  token,
+  setOpenAlert,
+  setMessage,
+  setOpenDialog
+) => {
   api
     .get(`/documentos/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
-      result.data.resultados.map((documento) => {
-        documento.id = documento.documentoID;
-      });
-      setData(result.data.resultados[0]);
+    .then(result => {
+      result.data.resultados.map(documento => {
+        documento.id = documento.documentoID
+      })
+      setData(result.data.resultados[0])
       setOpenDialog(true)
     })
-    .catch((error) => {
-      setMessage("erro api documentos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api documentos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
 export const downloadDoc = (id, token) => {
   api
     .get(`/documentos/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
-      var link = document.createElement("a");
-      link.href = result.data.resultados[0].url.url;
-      link.download = result.data.resultados[0].nome;
-      document.body.appendChild(link);
-      link.click();
+    .then(result => {
+      var link = document.createElement("a")
+      link.href = result.data.resultados[0].url
+      link.download = result.data.resultados[0].nome
+      document.body.appendChild(link)
+      link.click()
       setTimeout(function () {
-        window.URL.revokeObjectURL(link);
-      }, 200);
+        window.URL.revokeObjectURL(link)
+      }, 200)
     })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
-};
+    .catch(error => {
+      console.log(error)
+      return false
+    })
+}
 
 export const upload = (
-  documentoId,
+  data,
   fileUpload,
   onClose,
-  token,
   setOpenAlert,
-  setMessage
+  setMessage,
+  setCarregando
 ) => {
-  api
-    .post("/upload/", fileUpload, {
+  const formData = new FormData()
+  formData.append("key", data.fields_upload.key)
+  formData.append("AWSAccessKeyId", data.fields_upload.AWSAccessKeyId)
+  formData.append("policy", data.fields_upload.policy)
+  formData.append("signature", data.fields_upload.signature)
+  if (data.fields_upload["x-amz-security-token"] !== undefined) {
+    formData.append(
+      "x-amz-security-token",
+      data.fields_upload["x-amz-security-token"]
+    )
+  }
+  formData.append("file", fileUpload)
+  console.log(formData)
+  axios
+    .post(data.url_upload, formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        documento_id: documentoId,
         "Content-Type": "multipart/form-data",
       },
     })
-    .then((result) => {
-      setMessage("Documento cadastrado");
-      setOpenAlert(true);
-      onClose(true);
+    .then(result => {
+      setMessage("Documento cadastrado")
+      setOpenAlert(true)
+      setCarregando(false)
+      onClose(true)
     })
-    .catch((error) => {
-      setMessage("erro api upload");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api upload")
+      setCarregando(false)
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
 export const novoDocumento = (
   dados,
@@ -95,28 +123,32 @@ export const novoDocumento = (
   onClose,
   token,
   setOpenAlert,
-  setMessage
+  setMessage,
+  setCarregando
 ) => {
   api
     .post("/documentos/", dados, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
+    .then(result => {
+      // console.log(result)
+      // console.log(file)
       upload(
-        result.data.documentoID,
+        result.data,
         file,
         onClose,
-        token,
         setOpenAlert,
-        setMessage
-      );
+        setMessage,
+        setCarregando
+      )
     })
-    .catch((error) => {
-      setMessage("erro api documentos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api documentos")
+      setOpenAlert(true)
+      setCarregando(false)
+      console.log(error)
+    })
+}
 
 export const editDocumento = (
   dados,
@@ -126,18 +158,21 @@ export const editDocumento = (
   setOpenAlert,
   setMessage
 ) => {
-  api.put(`/documentos/${documentoId}`, dados, {
+  api
+    .put(`/documentos/${documentoId}`, dados, {
       headers: { Authorization: `Bearer ${token}` },
-    }).then((result) => {
-      setMessage("Documento alterado");
-      setOpenAlert(true);
-      onClose();
-    }).catch((error) => {
-      setMessage("erro api documentos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    })
+    .then(result => {
+      setMessage("Documento alterado")
+      setOpenAlert(true)
+      onClose()
+    })
+    .catch(error => {
+      setMessage("erro api documentos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}
 
 export const deleteDocumento = (
   documentoId,
@@ -149,13 +184,13 @@ export const deleteDocumento = (
     .delete(`/documentos/${documentoId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((result) => {
-      setMessage("Documento apagado");
-      setOpenAlert(true);
+    .then(result => {
+      setMessage("Documento apagado")
+      setOpenAlert(true)
     })
-    .catch((error) => {
-      setMessage("erro api documentos");
-      setOpenAlert(true);
-      console.log(error);
-    });
-};
+    .catch(error => {
+      setMessage("erro api documentos")
+      setOpenAlert(true)
+      console.log(error)
+    })
+}

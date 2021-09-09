@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react"
 import {
   Card,
   CardActions,
@@ -9,93 +9,93 @@ import {
   Chip,
   TextField,
   CircularProgress,
-} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import UserContext from "../../contexts/User/UserContext";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
-import { deleteDocumento, downloadDoc, getConteudos } from "./services";
-import { useStyles } from "../index.style";
-import EditDocumento from "./editConteudo";
+} from "@material-ui/core"
+import Pagination from "@material-ui/lab/Pagination"
+import UserContext from "../../contexts/User/UserContext"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
+import { deleteDocumento, downloadDoc, getConteudos } from "./services"
+import { useStyles } from "../index.style"
+import EditDocumento from "./editConteudo"
 
 function Grupo(props) {
-  const { grupo } = props;
-  let color = "default";
+  const { grupo } = props
+  let color = "default"
   if (grupo === "diretoria") {
-    color = "primary";
+    color = "primary"
   } else if (grupo === "ligantes") {
-    color = "secondary";
+    color = "secondary"
   }
-  return <Chip label={grupo} color={color} />;
+  return <Chip label={grupo} color={color} />
 }
 
 function CardView(props) {
-  const classes = useStyles();
-  const { conteudos, loadingpage, setConteudos, setLoading } = props;
-  const { token, groups } = useContext(UserContext);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
-  const [newConteudos, setNewConteudos] = useState([]);
-  const maxPage = 15;
-  const [minPage, setMin] = useState(0);
+  const classes = useStyles()
+  const { conteudos, loadingpage, setConteudos, setLoading } = props
+  const { token, groups } = useContext(UserContext)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
+  const [newConteudos, setNewConteudos] = useState([])
+  const maxPage = 15
+  const [minPage, setMin] = useState(0)
   const [conteudosPage, setConteudosPage] = useState(
     newConteudos.slice(minPage, maxPage)
-  );
+  )
   const [totalPages, setTotalPages] = useState(
     Math.ceil(newConteudos.length / maxPage)
-  );
-  const [showEdit, setShowEdit] = useState(false);
-  const [conteudoEdit, setConteudoEdit] = useState({});
+  )
+  const [showEdit, setShowEdit] = useState(false)
+  const [conteudoEdit, setConteudoEdit] = useState({})
 
   const handleChangePage = (event, value) => {
-    let min = maxPage;
-    let max = maxPage * value;
+    let min = maxPage
+    let max = maxPage * value
     if (min === max) {
-      min = 0;
+      min = 0
     }
-    setMin(min);
-    setMin(max);
-    setConteudosPage(newConteudos.slice(min, max));
-  };
+    setMin(min)
+    setMin(max)
+    setConteudosPage(newConteudos.slice(min, max))
+  }
 
-  const handlerDelete = (id) => {
-    deleteDocumento(id, token, setOpenAlert, setMessage);
-    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
-    setShowEdit(false);
-  };
+  const handlerDelete = id => {
+    deleteDocumento(id, token, setOpenAlert, setMessage)
+    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage)
+    setShowEdit(false)
+  }
 
-  const handlerEdit = (conteudo) => {
-    setConteudoEdit(conteudo);
-    setShowEdit(true);
-  };
+  const handlerEdit = conteudo => {
+    setConteudoEdit(conteudo)
+    setShowEdit(true)
+  }
 
   const handlerCloseEdit = () => {
-    setShowEdit(false);
-    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage);
-  };
+    setShowEdit(false)
+    getConteudos(setConteudos, setLoading, token, setOpenAlert, setMessage)
+  }
 
-  const handlerDownload = (id) => {
-    downloadDoc(id, token);
-    setShowEdit(false);
-  };
+  const handlerDownload = id => {
+    downloadDoc(id, token)
+    setShowEdit(false)
+  }
 
-  const filter = (value) => {
-    let filterConteudo = [];
-    value = value.toLowerCase();
-    conteudos.map((conteudo) => {
-      let nome = conteudo.nome.toLowerCase();
+  const filter = value => {
+    let filterConteudo = []
+    value = value.toLowerCase()
+    conteudos.map(conteudo => {
+      let nome = conteudo.nome.toLowerCase()
       if (nome.includes(value) || nome === value) {
-        filterConteudo.push(conteudo);
+        filterConteudo.push(conteudo)
       }
-    });
-    setNewConteudos(filterConteudo);
-    setTotalPages(Math.ceil(newConteudos.length / maxPage));
-    setConteudosPage(filterConteudo.slice(0, maxPage));
-  };
+    })
+    setNewConteudos(filterConteudo)
+    setTotalPages(Math.ceil(newConteudos.length / maxPage))
+    setConteudosPage(filterConteudo.slice(0, maxPage))
+  }
 
   useEffect(() => {
-    setNewConteudos(conteudos);
-    setConteudosPage(conteudos.slice(minPage, maxPage));
-    setTotalPages(Math.ceil(conteudos.length / maxPage));
-  }, [conteudos]);
+    setNewConteudos(conteudos)
+    setConteudosPage(conteudos.slice(minPage, maxPage))
+    setTotalPages(Math.ceil(conteudos.length / maxPage))
+  }, [conteudos])
 
   return (
     <>
@@ -107,7 +107,7 @@ function CardView(props) {
           placeholder="Pesquisar por nome"
           fullWidth={true}
           margin="normal"
-          onChange={(event) => filter(event.target.value)}
+          onChange={event => filter(event.target.value)}
           className={classes.cardViewSearch}
         />
       </Grid>
@@ -160,7 +160,7 @@ function CardView(props) {
                       size="small"
                       color="secondary"
                       onClick={() => {
-                        handlerDelete(conteudo.id);
+                        handlerDelete(conteudo.id)
                       }}
                     >
                       Apagar
@@ -169,7 +169,7 @@ function CardView(props) {
                       size="small"
                       color="secondary"
                       onClick={() => {
-                        handlerEdit(conteudo);
+                        handlerEdit(conteudo)
                       }}
                     >
                       Editar
@@ -180,7 +180,7 @@ function CardView(props) {
                   size="small"
                   color="primary"
                   onClick={() => {
-                    handlerDownload(conteudo.id, conteudo.nome);
+                    handlerDownload(conteudo.id, conteudo.nome)
                   }}
                 >
                   Baixar
@@ -207,7 +207,7 @@ function CardView(props) {
         onDownload={handlerDownload}
       />
     </>
-  );
+  )
 }
 
-export default CardView;
+export default CardView

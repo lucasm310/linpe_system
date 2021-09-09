@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import AlertsContext from "./AlertsContext";
+import React, { useState } from "react"
+import AlertsContext from "./AlertsContext"
 
 const AlertsProvider = ({ children }) => {
-  const [openAlert, setOpenAlert] = useState(false);
-  const [message, setMessage] = useState(false);
-  
+  const [openAlert, setOpenAlert] = useState(false)
+  const [message, setMessage] = useState(false)
+
   const handleClose = () => {
     setOpenAlert(false)
   }
@@ -16,12 +16,12 @@ const AlertsProvider = ({ children }) => {
         setOpenAlert,
         handleClose,
         message,
-        setMessage
+        setMessage,
       }}
     >
       {children}
     </AlertsContext.Provider>
-  );
-};
+  )
+}
 
-export default AlertsProvider;
+export default AlertsProvider

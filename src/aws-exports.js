@@ -5,7 +5,7 @@ const {
   REACT_APP_USERPOOL_ID,
   REACT_APP_CLIENT_ID,
   REACT_APP_OAUTHDOMAIN,
-} = process.env;
+} = process.env
 
 const awsmobile = {
   aws_project_region: REACT_APP_AWS_REGION,
@@ -27,6 +27,6 @@ const awsmobile = {
     responseType: "code",
   },
   federationTarget: "COGNITO_USER_POOLS",
-};
+}
 
-export default awsmobile;
+export default awsmobile

@@ -4,14 +4,14 @@ import React, {
   useEffect,
   useContext,
   useState,
-} from "react";
-import { Paper, LinearProgress } from "@material-ui/core";
-import { withStyles, styled } from "@material-ui/core/styles";
+} from "react"
+import { Paper, LinearProgress } from "@material-ui/core"
+import { withStyles, styled } from "@material-ui/core/styles"
 import {
   ViewState,
   EditingState,
   IntegratedEditing,
-} from "@devexpress/dx-react-scheduler";
+} from "@devexpress/dx-react-scheduler"
 import {
   Scheduler,
   Resources,
@@ -26,16 +26,16 @@ import {
   AppointmentTooltip,
   TodayButton,
   AllDayPanel,
-} from "@devexpress/dx-react-scheduler-material-ui";
-import UserContext from "../../contexts/User/UserContext";
-import AlertsContext from "../../contexts/Alerts/AlertsContext";
+} from "@devexpress/dx-react-scheduler-material-ui"
+import UserContext from "../../contexts/User/UserContext"
+import AlertsContext from "../../contexts/Alerts/AlertsContext"
 
 import {
   getEventos,
   novoEvento,
   deleteEvento,
   atualizaEvento,
-} from "./services";
+} from "./services"
 
 const styles = {
   toolbarRoot: {
@@ -47,14 +47,14 @@ const styles = {
     bottom: 0,
     left: 0,
   },
-};
+}
 
 const initialState = {
   data: [],
   loading: false,
   currentDate: new Date(),
   currentViewName: "Month",
-};
+}
 
 const resourcesData = [
   {
@@ -72,14 +72,14 @@ const resourcesData = [
     id: "diretoria",
     color: "#A0CAF5",
   },
-];
+]
 const resources = [
   {
     fieldName: "grupo",
     title: "Grupo",
     instances: resourcesData,
   },
-];
+]
 
 const ToolbarWithLoading = withStyles(styles, { name: "Toolbar" })(
   ({ children, classes, ...restProps }) => (
@@ -88,9 +88,9 @@ const ToolbarWithLoading = withStyles(styles, { name: "Toolbar" })(
       <LinearProgress className={classes.progress} />
     </div>
   )
-);
+)
 
-const mapEventos = (evento) => ({
+const mapEventos = evento => ({
   id: evento.eventosID,
   startDate: +new Date(evento.data_inicio),
   endDate: +new Date(evento.data_fim),
@@ -98,72 +98,72 @@ const mapEventos = (evento) => ({
   grupo: evento.grupo,
   notes: evento.descricao,
   allDay: evento.all_day,
-});
+})
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "setLoading":
-      return { ...state, loading: action.payload };
+      return { ...state, loading: action.payload }
     case "setData":
-      return { ...state, data: action.payload.map(mapEventos) };
+      return { ...state, data: action.payload.map(mapEventos) }
     case "setCurrentViewName":
-      return { ...state, currentViewName: action.payload };
+      return { ...state, currentViewName: action.payload }
     case "setCurrentDate":
-      return { ...state, currentDate: action.payload };
+      return { ...state, currentDate: action.payload }
     default:
-      return state;
+      return state
   }
-};
+}
 
-const MyPaper = styled(Paper)({ borderRadius: 5, borderColor: "#f1b9e1" });
+const MyPaper = styled(Paper)({ borderRadius: 5, borderColor: "#f1b9e1" })
 
 function Eventos() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { data, loading, currentViewName, currentDate } = state;
-  const { token, groups, checkExpire } = useContext(UserContext);
-  const { setOpenAlert, setMessage } = useContext(AlertsContext);
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { data, loading, currentViewName, currentDate } = state
+  const { token, groups, checkExpire } = useContext(UserContext)
+  const { setOpenAlert, setMessage } = useContext(AlertsContext)
 
-  const [readonly, setReadonly] = useState(true);
+  const [readonly, setReadonly] = useState(true)
   const setCurrentViewName = useCallback(
-    (nextViewName) =>
+    nextViewName =>
       dispatch({
         type: "setCurrentViewName",
         payload: nextViewName,
       }),
     [dispatch]
-  );
+  )
   const setData = useCallback(
-    (nextData) =>
+    nextData =>
       dispatch({
         type: "setData",
         payload: nextData,
       }),
     [dispatch]
-  );
+  )
   const setCurrentDate = useCallback(
-    (nextDate) =>
+    nextDate =>
       dispatch({
         type: "setCurrentDate",
         payload: nextDate,
       }),
     [dispatch]
-  );
+  )
   const setLoading = useCallback(
-    (nextLoading) =>
+    nextLoading =>
       dispatch({
         type: "setLoading",
         payload: nextLoading,
       }),
     [dispatch]
-  );
+  )
 
   function commitChanges({ added, changed, deleted }) {
     if (added) {
-      novoEvento(added, setData, setLoading, token, setOpenAlert, setMessage);
+      novoEvento(added, setData, setLoading, token, setOpenAlert, setMessage)
     }
     if (changed) {
-      var eventoID = Object.keys(changed)[0];
-      var dados = Object.values(changed)[0];
+      var eventoID = Object.keys(changed)[0]
+      var dados = Object.values(changed)[0]
       atualizaEvento(
         eventoID,
         dados,
@@ -172,7 +172,7 @@ function Eventos() {
         token,
         setOpenAlert,
         setMessage
-      );
+      )
     }
     if (deleted !== undefined) {
       deleteEvento(
@@ -182,23 +182,23 @@ function Eventos() {
         token,
         setOpenAlert,
         setMessage
-      );
+      )
     }
-    return true;
+    return true
   }
 
   useEffect(() => {
-    checkExpire();
-    getEventos(setData, setLoading, token, setOpenAlert, setMessage);
-  }, [setData, currentViewName, currentDate]);
+    checkExpire()
+    getEventos(setData, setLoading, token, setOpenAlert, setMessage)
+  }, [setData, currentViewName, currentDate])
 
   useEffect(() => {
     if (groups) {
       if (groups.includes("diretoria")) {
-        setReadonly(false);
+        setReadonly(false)
       }
     }
-  }, [groups]);
+  }, [groups])
 
   return (
     <MyPaper>
@@ -242,7 +242,7 @@ function Eventos() {
         />
       </Scheduler>
     </MyPaper>
-  );
+  )
 }
 
-export default Eventos;
+export default Eventos

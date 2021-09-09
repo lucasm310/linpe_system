@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
   Card,
   CardActions,
@@ -8,53 +8,53 @@ import {
   Grid,
   TextField,
   CircularProgress,
-} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import { useStyles } from "../index.style";
+} from "@material-ui/core"
+import Pagination from "@material-ui/lab/Pagination"
+import { useStyles } from "../index.style"
 
 function CardView(props) {
-  const classes = useStyles();
-  const { noticias, handleViewNoticia, loadingpage } = props;
-  const maxPage = 15;
-  const [newNoticias, setNewNoticias] = useState([]);
-  const [minPage, setMin] = useState(0);
+  const classes = useStyles()
+  const { noticias, handleViewNoticia, loadingpage } = props
+  const maxPage = 15
+  const [newNoticias, setNewNoticias] = useState([])
+  const [minPage, setMin] = useState(0)
   const [noticiasPage, setNoticiasPage] = useState(
     newNoticias.slice(minPage, maxPage)
-  );
+  )
   const [totalPages, setTotalPages] = useState(
     Math.ceil(newNoticias.length / maxPage)
-  );
+  )
 
   const handleChangePage = (event, value) => {
-    let min = maxPage;
-    let max = maxPage * value;
+    let min = maxPage
+    let max = maxPage * value
     if (min === max) {
-      min = 0;
+      min = 0
     }
-    setMin(min);
-    setMin(max);
-    setNoticiasPage(newNoticias.slice(min, max));
-  };
+    setMin(min)
+    setMin(max)
+    setNoticiasPage(newNoticias.slice(min, max))
+  }
 
-  const filter = (value) => {
-    let filterNoticias = [];
-    value = value.toLowerCase();
-    noticias.map((noticia) => {
-      let titulo = noticia.titulo.toLowerCase();
+  const filter = value => {
+    let filterNoticias = []
+    value = value.toLowerCase()
+    noticias.map(noticia => {
+      let titulo = noticia.titulo.toLowerCase()
       if (titulo.includes(value) || titulo === value) {
-        filterNoticias.push(noticia);
+        filterNoticias.push(noticia)
       }
-    });
-    setNewNoticias(filterNoticias);
-    setTotalPages(Math.ceil(filterNoticias.length / maxPage));
-    setNoticiasPage(filterNoticias.slice(0, maxPage));
-  };
+    })
+    setNewNoticias(filterNoticias)
+    setTotalPages(Math.ceil(filterNoticias.length / maxPage))
+    setNoticiasPage(filterNoticias.slice(0, maxPage))
+  }
 
   useEffect(() => {
-    setNewNoticias(noticias);
-    setNoticiasPage(noticias.slice(minPage, maxPage));
-    setTotalPages(Math.ceil(noticias.length / maxPage));
-  }, [noticias]);
+    setNewNoticias(noticias)
+    setNoticiasPage(noticias.slice(minPage, maxPage))
+    setTotalPages(Math.ceil(noticias.length / maxPage))
+  }, [noticias])
 
   return (
     <>
@@ -67,7 +67,7 @@ function CardView(props) {
           placeholder="Filtrar pelo Titulo"
           fullWidth={true}
           margin="normal"
-          onChange={(event) => filter(event.target.value)}
+          onChange={event => filter(event.target.value)}
         />
       </Grid>
       {loadingpage && (
@@ -106,7 +106,7 @@ function CardView(props) {
                   size="small"
                   color="primary"
                   onClick={() => {
-                    handleViewNoticia(noticia);
+                    handleViewNoticia(noticia)
                   }}
                 >
                   Ver
@@ -126,7 +126,7 @@ function CardView(props) {
         <Pagination count={totalPages} onChange={handleChangePage} />
       </Grid>
     </>
-  );
+  )
 }
 
-export default CardView;
+export default CardView

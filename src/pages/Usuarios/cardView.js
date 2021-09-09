@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
   Card,
   CardActions,
@@ -9,17 +9,17 @@ import {
   TextField,
   Chip,
   CircularProgress,
-} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import { useStyles } from "../index.style";
+} from "@material-ui/core"
+import Pagination from "@material-ui/lab/Pagination"
+import { useStyles } from "../index.style"
 
 function Grupo(props) {
-  const { user, grupo, handleDeleteGroup } = props;
-  let color = "default";
+  const { user, grupo, handleDeleteGroup } = props
+  let color = "default"
   if (grupo === "diretoria") {
-    color = "primary";
+    color = "primary"
   } else if (grupo === "ligantes") {
-    color = "secondary";
+    color = "secondary"
   }
   return (
     <Chip
@@ -27,65 +27,65 @@ function Grupo(props) {
       color={color}
       onDelete={() => handleDeleteGroup(user, grupo)}
     />
-  );
+  )
 }
 
 function CardView(props) {
-  const classes = useStyles();
+  const classes = useStyles()
   const {
     usuarios,
     handleDeleteGroup,
     handlerDeleteUsuario,
     handlerAddGroup,
     loadingpage,
-  } = props;
-  const [newUsuarios, setNewUsuarios] = useState([]);
-  const maxPage = 15;
-  const [minPage, setMin] = useState(0);
+  } = props
+  const [newUsuarios, setNewUsuarios] = useState([])
+  const maxPage = 15
+  const [minPage, setMin] = useState(0)
   const [usuariosPage, setUsuariosPage] = useState(
     newUsuarios.slice(minPage, maxPage)
-  );
+  )
   const [totalPages, setTotalPages] = useState(
     Math.ceil(newUsuarios.length / maxPage)
-  );
+  )
 
   const handleChangePage = (event, value) => {
-    let min = maxPage;
-    let max = maxPage * value;
+    let min = maxPage
+    let max = maxPage * value
     if (min === max) {
-      min = 0;
+      min = 0
     }
-    setMin(min);
-    setMin(max);
-    setUsuariosPage(newUsuarios.slice(min, max));
-  };
+    setMin(min)
+    setMin(max)
+    setUsuariosPage(newUsuarios.slice(min, max))
+  }
 
   const filter = (value, campo) => {
-    let filterUsuarios = [];
-    value = value.toLowerCase();
-    usuarios.map((usuario) => {
-      let nome = usuario.nome.toLowerCase();
-      let email = usuario.email;
+    let filterUsuarios = []
+    value = value.toLowerCase()
+    usuarios.map(usuario => {
+      let nome = usuario.nome.toLowerCase()
+      let email = usuario.email
       if (campo === "nome") {
         if (nome.includes(value) || nome === value) {
-          filterUsuarios.push(usuario);
+          filterUsuarios.push(usuario)
         }
       } else if (campo === "email") {
         if (email.includes(value) || email === value) {
-          filterUsuarios.push(usuario);
+          filterUsuarios.push(usuario)
         }
       }
-    });
-    setNewUsuarios(filterUsuarios);
-    setTotalPages(Math.ceil(filterUsuarios.length / maxPage));
-    setUsuariosPage(filterUsuarios.slice(0, maxPage));
-  };
+    })
+    setNewUsuarios(filterUsuarios)
+    setTotalPages(Math.ceil(filterUsuarios.length / maxPage))
+    setUsuariosPage(filterUsuarios.slice(0, maxPage))
+  }
 
   useEffect(() => {
-    setNewUsuarios(usuarios);
-    setUsuariosPage(usuarios.slice(minPage, maxPage));
-    setTotalPages(Math.ceil(usuarios.length / maxPage));
-  }, [usuarios]);
+    setNewUsuarios(usuarios)
+    setUsuariosPage(usuarios.slice(minPage, maxPage))
+    setTotalPages(Math.ceil(usuarios.length / maxPage))
+  }, [usuarios])
 
   return (
     <>
@@ -98,7 +98,7 @@ function CardView(props) {
             placeholder="Filtrar pelo Nome"
             margin="normal"
             fullWidth={true}
-            onChange={(event) => filter(event.target.value, "nome")}
+            onChange={event => filter(event.target.value, "nome")}
           />
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingLeft: 5, paddingRight: 5 }}>
@@ -109,7 +109,7 @@ function CardView(props) {
             placeholder="Filtrar pelo Email"
             margin="normal"
             fullWidth={true}
-            onChange={(event) => filter(event.target.value, "email")}
+            onChange={event => filter(event.target.value, "email")}
           />
         </Grid>
       </Grid>
@@ -213,7 +213,7 @@ function CardView(props) {
         <Pagination count={totalPages} onChange={handleChangePage} />
       </Grid>
     </>
-  );
+  )
 }
 
-export default CardView;
+export default CardView
